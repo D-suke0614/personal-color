@@ -6,8 +6,6 @@
   顔写真を元にパーソナルカラーを診断
 </p>
 
-<!-- プロジェクトの概要を記載 -->
-
 ## 使用技術一覧
 
 <p style="display: inline">
@@ -20,18 +18,29 @@
   <img src="https://img.shields.io/badge/-vercel-000000.svg?logo=vercel&style=for-the-badge">
 </p>
 
-<!-- ## 目次
-
-1. [プロジェクトについて](#プロジェクトについて)
-2. [環境](#環境)
-3. [ディレクトリ構成](#ディレクトリ構成) -->
-
 ## Getting Start
 
 ```:bash
 $ npm ci
 $ npm dev
 ```
+
+### husky(lint-staged)について
+
+コミット前に、ステージングしたファイルを対象に以下を実行します。
+
+- eslint
+- prettier
+
+### ESLintなどの設定について
+
+以下の項目については[こちらの記事](https://zenn.dev/siakas/articles/05481bdefacd13)を参考に設定しているので、興味あれば読んでみてください。
+
+- eslint
+- prettier
+- husky
+- .editorconfig
+- .vscode/setting.json
 
 ## 本番環境
 https://personal-color-tau.vercel.app/
