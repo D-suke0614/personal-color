@@ -2,7 +2,9 @@
 
 <!-- プロジェクトについて -->
 
-顔写真を元にパーソナルカラーを診断するアプリ
+<p>
+  顔写真を元にパーソナルカラーを診断
+</p>
 
 <!-- プロジェクトの概要を記載 -->
 
@@ -11,7 +13,7 @@
 <p style="display: inline">
   <!-- フロントエンド -->
   <img src="https://img.shields.io/badge/-Next.js-000000.svg?logo=next.js&style=for-the-badge">
-  <img src="https://img.shields.io/badge/-TailwindCSS-000000.svg?logo=tailwindcss&style=for-the-badge">
+  <img src="https://img.shields.io/badge/-TailwindCSS-ffffff.svg?logo=tailwindcss&style=for-the-badge">
   <img src="https://img.shields.io/badge/-React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB">
   <!-- インフラ -->
   <img src="https://img.shields.io/badge/-githubactions-FFFFFF.svg?logo=github-actions&style=for-the-badge">
@@ -30,3 +32,6 @@
 $ npm ci
 $ npm dev
 ```
+
+## 本番環境
+https://personal-color-tau.vercel.app/
