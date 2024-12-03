@@ -1,36 +1,46 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Personal Color（何かいいアプリ名考えてw）
 
-## Getting Started
+<!-- プロジェクトについて -->
 
-First, run the development server:
+<p>
+  顔写真を元にパーソナルカラーを診断
+</p>
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## 使用技術一覧
+
+<p style="display: inline">
+  <!-- フロントエンド -->
+  <img src="https://img.shields.io/badge/-Next.js-000000.svg?logo=next.js&style=for-the-badge">
+  <img src="https://img.shields.io/badge/-TailwindCSS-ffffff.svg?logo=tailwindcss&style=for-the-badge">
+  <img src="https://img.shields.io/badge/-React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB">
+  <!-- インフラ -->
+  <img src="https://img.shields.io/badge/-githubactions-FFFFFF.svg?logo=github-actions&style=for-the-badge">
+  <img src="https://img.shields.io/badge/-vercel-000000.svg?logo=vercel&style=for-the-badge">
+</p>
+
+## Getting Start
+
+```:bash
+$ npm ci
+$ npm dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### husky(lint-staged)について
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+コミット前に、ステージングしたファイルを対象に以下を実行します。
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- eslint
+- prettier
 
-## Learn More
+### ESLintなどの設定について
 
-To learn more about Next.js, take a look at the following resources:
+以下の項目については[こちらの記事](https://zenn.dev/siakas/articles/05481bdefacd13)を参考に設定しているので、興味あれば読んでみてください。
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- eslint
+- prettier
+- husky
+- .editorconfig
+- .vscode/setting.json
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 本番環境
+https://personal-color-tau.vercel.app/
