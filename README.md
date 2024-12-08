@@ -14,6 +14,8 @@
   <img src="https://img.shields.io/badge/-Next.js-000000.svg?logo=next.js&style=for-the-badge">
   <!-- react.js -->
   <img src="https://img.shields.io/badge/-React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB">
+  <!-- typescript -->
+  <img src="https://img.shields.io/badge/-TypeScript-ffffff?style=for-the-badge&logo=typescript&logoColor=#3178C6">
   <!-- tailwind -->
   <img src="https://img.shields.io/badge/-TailwindCSS-ffffff.svg?logo=tailwindcss&style=for-the-badge">
   <!-- インフラ -->
@@ -25,18 +27,18 @@
   <img src="https://img.shields.io/badge/-vercel-000000.svg?logo=vercel&style=for-the-badge">
 </p>
 
-## Getting Start
+## 環境構築
 
-node v20.18.1で動作確認してます
+以下の手順に従って環境構築してください
 
-node ^18.18.0 || ^19.8.0 || >= 20.0.0だと動くと思います
-
-```:bash
+```bash
 $ git clone https://github.com/D-suke0614/personal-color.git
 $ cd ./personal-color
 $ npm ci
-$ npm run dev
 ```
+
+### Node.jsについて
+node ^18.18.0 || ^19.8.0 || >= 20.0.0を使用してください
 
 ### husky(lint-staged)について
 
@@ -54,6 +56,18 @@ $ npm run dev
 - husky
 - .editorconfig
 - .vscode/setting.json
+
+## 開発手順
+
+[こちらの内容](./doc/ブランチ運用について.md)に従ってブランチを切り、ローカルサーバを起動させて開発を進めてください
+
+```bash
+$ npm run dev
+```
+
+ローカルサーバにアクセス
+
+http://localhost:3000
 
 ## 本番環境
 https://personal-color-tau.vercel.app/
