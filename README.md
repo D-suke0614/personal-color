@@ -20,7 +20,7 @@
   <img src="https://img.shields.io/badge/-TailwindCSS-ffffff.svg?logo=tailwindcss&style=for-the-badge">
   <!-- インフラ -->
   <!-- github actions -->
-  <!-- <img src="https://img.shields.io/badge/-githubactions-FFFFFF.svg?logo=github-actions&style=for-the-badge"> -->
+  <img src="https://img.shields.io/badge/-githubactions-FFFFFF.svg?logo=github-actions&style=for-the-badge">
   <!-- husky -->
   <img src="https://img.shields.io/badge/-husky-C2A633.svg?logo=&style=for-the-badge">
   <!-- vercel -->
