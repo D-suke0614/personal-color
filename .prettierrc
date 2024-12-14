@@ -6,7 +6,7 @@
   "singleQuote": true,
   "jsxSingleQuote": false,
   "arrowParens": "always",
-  "printWidth": 85,
+  "printWidth": 90,
   "bracketSpacing": true,
   "plugins": ["prettier-plugin-organize-imports"],
   "overrides": [
