@@ -4,6 +4,7 @@ type ButtonProps = {
   disabled?: boolean;
   type?: 'button' | 'submit' | 'reset';
 };
+
 const Button = ({
   children,
   onClick,
