@@ -60,7 +60,7 @@ node ^18.18.0 || ^19.8.0 || >= 20.0.0を使用してください
 
 ## 開発手順
 
-[HowToDev](./doc/HowToDev.md.md)の内容を元に、開発を進めてください
+[HowToDev](./doc/HowToDev.md)の内容を元に、開発を進めてください
 
 ```
 $ npm run dev
