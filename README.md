@@ -18,6 +18,8 @@
   <img src="https://img.shields.io/badge/-TypeScript-ffffff?style=for-the-badge&logo=typescript&logoColor=#3178C6">
   <!-- tailwind -->
   <img src="https://img.shields.io/badge/-TailwindCSS-ffffff.svg?logo=tailwindcss&style=for-the-badge">
+  <!-- storybook -->
+  <img src="https://img.shields.io/badge/-StoryBook-d8ddde.svg?logo=storybook&style=for-the-badge">
   <!-- インフラ -->
   <!-- github actions -->
   <img src="https://img.shields.io/badge/-githubactions-FFFFFF.svg?logo=github-actions&style=for-the-badge">
