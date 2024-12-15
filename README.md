@@ -31,13 +31,14 @@
 
 以下の手順に従って環境構築してください
 
-```bash
+```
 $ git clone https://github.com/D-suke0614/personal-color.git
 $ cd ./personal-color
 $ npm ci
 ```
 
 ### Node.jsについて
+
 node ^18.18.0 || ^19.8.0 || >= 20.0.0を使用してください
 
 ### husky(lint-staged)について
@@ -59,9 +60,9 @@ node ^18.18.0 || ^19.8.0 || >= 20.0.0を使用してください
 
 ## 開発手順
 
-[こちらの内容](./doc/ブランチ運用について.md)に従ってブランチを切り、ローカルサーバを起動させて開発を進めてください
+[HowToDev](./doc/HowToDev.md.md)の内容を元に、開発を進めてください
 
-```bash
+```
 $ npm run dev
 ```
 
@@ -70,4 +71,5 @@ $ npm run dev
 http://localhost:3000
 
 ## 本番環境
+
 https://personal-color-tau.vercel.app/
