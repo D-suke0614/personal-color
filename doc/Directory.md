@@ -1,7 +1,9 @@
 # 【WIP】実際に開発進めながらアップデートしていく想定
+
 https://qiita.com/miumi/items/359b8a77bbb6f9666950
 
 ## Directory構成について
+
 ```
 ├── app          ... ルーティングに関するコンポーネント
 ├── features     ... ロジック + コンポーネントをまとめたもの
@@ -14,27 +16,33 @@ https://qiita.com/miumi/items/359b8a77bbb6f9666950
 ```
 
 ### appディレクトリ
+
 ルートページに関することを記述<br>
 appディレクトリ内では`use client`を極力使用しない方向<br>
- →useXXといったhooksは使わないため、Sever Componentだけになる想定
+→useXXといったhooksは使わないため、Sever Componentだけになる想定
 
 ## featuresディレクトリ
+
 ロジック+コンポーネントのファイルは全てfeaturesの中に記述する<br>
 基本的にappディレクトリから呼び出されることになる
 
 ## componentsディレクトリ
+
 ロジックのないロジックのない共通コンポーネント<br>
 いろいろなところで使用できるUIに関することを記述<br>
 Atomic Designでいう、Atoms, Moleculesにあたるコンポーネントが配置される想定
 
 ## hooksディレクトリ
+
 共通ロジックのうち、React Hooksがあるものだけを記述<br>
 特定のページだけに依存するようなロジックは、featuresディレクトリに記述する
 
 ## utilsディレクトリ
+
 共通ロジックのうち、React Hooksがないものだけを記述<br>
 文字の整形や、フォーマット、どこでも使えそうな汎用的な関数はここに書いていくことになりそう
 
 ## constantsディレクトリ
+
 定数を定義したファイル群<br>
 カラーコードなど定数として管理しておきたいもの
