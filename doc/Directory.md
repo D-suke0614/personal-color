@@ -2,7 +2,7 @@
 
 https://qiita.com/miumi/items/359b8a77bbb6f9666950
 
-## Directory構成について
+## Directory構成について（src配下）
 
 ```
 ├── app          ... ルーティングに関するコンポーネント
