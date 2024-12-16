@@ -64,13 +64,21 @@ node ^18.18.0 || ^19.8.0 || >= 20.0.0を使用してください
 
 [HowToDev](./doc/HowToDev.md)の内容を元に、開発を進めてください
 
+コンポーネントいじった際は、ストーリーブックのメンテもお願いします
+
 ```
 $ npm run dev
+// 開発サーバ
+$ npm run dev-story
+// 開発サーバとストーリブック
+$ npm run storybook
+// ストーリーブック
 ```
 
 ローカルサーバにアクセス
 
-http://localhost:3000
+- next.js : http://localhost:3000
+- storybook : http://localhost:6006/
 
 ## 本番環境
 
