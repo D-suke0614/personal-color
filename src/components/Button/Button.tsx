@@ -13,10 +13,14 @@ const Button = ({
   type = 'button',
   disabled = false,
 }: ButtonProps) => {
-  const baseClass =
-    'bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded';
+  const baseClass = ` ${disabled ? 'opacity-50' : 'hover:bg-blue-700'}`;
   return (
-    <button onClick={onClick} className={baseClass} type={type} disabled={disabled}>
+    <button
+      onClick={onClick}
+      className={`rounded-full bg-blue-500 px-4 py-2 font-bold text-white ${baseClass}`}
+      type={type}
+      disabled={disabled}
+    >
       {children}
     </button>
   );
