@@ -1,3 +1,5 @@
+'use client';
+
 type ButtonProps = {
   children: string;
   onClick?: () => void;
@@ -11,7 +13,8 @@ const Button = ({
   type = 'button',
   disabled = false,
 }: ButtonProps) => {
-  const baseClass = 'font-medium';
+  const baseClass =
+    'bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded';
   return (
     <button onClick={onClick} className={baseClass} type={type} disabled={disabled}>
       {children}
