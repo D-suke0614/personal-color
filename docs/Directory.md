@@ -32,6 +32,16 @@ appディレクトリ内では`use client`を極力使用しない方向<br>
 いろいろなところで使用できるUIに関することを記述<br>
 Atomic Designでいう、Atoms, Moleculesにあたるコンポーネントが配置される想定
 
+### components配下について
+`Button`などのディレクトリを作成し、その配下に`Button.tsx`と`Button.stories.ts`ファイルを作成してください
+
+```
+├──components
+     ├── Button
+           ├── Button.tsx
+           ├── Button.stories.ts
+```
+
 ## hooksディレクトリ
 
 共通ロジックのうち、React Hooksがあるものだけを記述<br>
