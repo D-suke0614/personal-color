@@ -28,14 +28,30 @@ export default function HomePage() {
     faceapi.matchDimensions(canvas, displaySize);
 
     setInterval(async () => {
-      const detections = await faceapi.detectAllFaces(
-        video,
-        new faceapi.TinyFaceDetectorOptions(),
-      );
+      const detections = await faceapi
+        .detectAllFaces(video, new faceapi.TinyFaceDetectorOptions())
+        .withFaceLandmarks()
+        .withFaceDescriptors()
+        .withAgeAndGender();
+
+      console.log('detections', detections);
+
       const resizedDetections = faceapi.resizeResults(detections, displaySize);
 
-      canvas.getContext('2d')?.clearRect(0, 0, canvas.width, canvas.height);
+      const ctx = canvas.getContext('2d');
+      if (!ctx) return;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
       faceapi.draw.drawDetections(canvas, resizedDetections);
+      faceapi.draw.drawFaceLandmarks(canvas, resizedDetections);
+
+      resizedDetections.forEach((detection) => {
+        const { age, gender } = detection;
+        const { x, y } = detection.detection.box;
+
+        const text = `${Math.round(age)} years old, ${gender}`;
+        ctx.fillStyle = 'red';
+        ctx.fillText(text, x + 45, y - 5); // 顔の上部に表示
+      });
     }, 100);
   };
 
@@ -47,6 +63,7 @@ export default function HomePage() {
           faceapi.nets.tinyFaceDetector.loadFromUri(MODEL_URL),
           faceapi.nets.faceLandmark68Net.loadFromUri(MODEL_URL),
           faceapi.nets.faceRecognitionNet.loadFromUri(MODEL_URL),
+          faceapi.nets.ageGenderNet.loadFromUri(MODEL_URL),
         ]);
         console.log('Models loaded successfully');
       } catch (error) {
