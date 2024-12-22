@@ -18,7 +18,11 @@ export default function HomePage() {
       canvasRef.current.replaceWith(canvas);
     }
     canvasRef.current = canvas;
-    document.body.append(canvas);
+    canvas.className = 'absolute';
+    const mainEl = document.getElementById('main');
+    if (!mainEl) return;
+    mainEl.style.position = 'relative';
+    mainEl.append(canvas);
 
     const displaySize = { width: video.width, height: video.height };
     faceapi.matchDimensions(canvas, displaySize);
@@ -67,15 +71,16 @@ export default function HomePage() {
   }, []);
 
   return (
-    <main>
-      <h1>Face Recognition with Next.js (App Router + TypeScript)</h1>
+    <main id="main">
+      <h1>Face Recognition with Next.js</h1>
       <video
+        className="absolute"
         ref={videoRef}
         autoPlay
         muted
         width="640"
         height="480"
-        onPlay={handleVideoPlay} // handleVideoPlayをここで参照
+        onPlay={handleVideoPlay}
       />
     </main>
   );
