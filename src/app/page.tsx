@@ -52,7 +52,7 @@ export default function HomePage() {
         ctx.fillStyle = 'red';
         ctx.fillText(text, x + 45, y - 5); // 顔の上部に表示
       });
-    }, 100);
+    }, 1000);
   };
 
   useEffect(() => {
