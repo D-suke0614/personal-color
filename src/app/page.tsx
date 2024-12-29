@@ -34,8 +34,6 @@ export default function HomePage() {
         .withFaceDescriptors()
         .withAgeAndGender();
 
-      console.log('detections', detections);
-
       const resizedDetections = faceapi.resizeResults(detections, displaySize);
 
       const ctx = canvas.getContext('2d');
@@ -47,13 +45,53 @@ export default function HomePage() {
       resizedDetections.forEach((detection) => {
         const { age, gender } = detection;
         const { x, y } = detection.detection.box;
+        const nosePoints = detection.landmarks.getNose();
+        const noseTip = nosePoints[4];
 
-        const text = `${Math.round(age)} years old, ${gender}`;
+        const boxSize = 10; // 縮小した範囲のサイズ (10x10ピクセル)
+        const startX = Math.max(0, Math.round(noseTip.x - boxSize / 2));
+        const startY = Math.max(0, Math.round(noseTip.y - boxSize / 2));
+
+        const noseData = ctx.getImageData(startX, startY, boxSize, boxSize);
+        const { r, g, b } = calculateAverageColor(noseData.data);
+
+        // RGB値をカラーコードに変換
+        const colorCode = rgbToHex(r, g, b);
+        const text = `${Math.round(age)} years old, ${gender} average Color , ${colorCode}`;
         ctx.fillStyle = 'red';
         ctx.fillText(text, x + 45, y - 5); // 顔の上部に表示
       });
     }, 1000);
   };
+
+  const calculateAverageColor = (data: Uint8ClampedArray<ArrayBufferLike>) => {
+    let r = 0,
+      g = 0,
+      b = 0;
+    let count = 0;
+
+    for (let i = 0; i < data.length; i += 4) {
+      const alpha = data[i + 3]; // アルファ値（透明度）
+      if (alpha > 0) {
+        // 透明なピクセルを除外
+        r += data[i]; // Red
+        g += data[i + 1]; // Green
+        b += data[i + 2]; // Blue
+        count++;
+      }
+    }
+
+    return {
+      r: Math.round(r / count),
+      g: Math.round(g / count),
+      b: Math.round(b / count),
+    };
+  };
+
+  function rgbToHex(r: number, g: number, b: number) {
+    const toHex = (component: number) => component.toString(16).padStart(2, '0');
+    return `#${toHex(r)}${toHex(g)}${toHex(b)}`;
+  }
 
   useEffect(() => {
     const loadModels = async () => {
