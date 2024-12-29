@@ -7,76 +7,71 @@ export default function HomePage() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
-  // handleVideoPlayをコンポーネントのスコープ内に定義
-  const handleVideoPlay = () => {
-    if (!videoRef.current) return;
+  const handleCaptureAndAnalyze = async () => {
+    if (!videoRef.current || !canvasRef.current) return;
 
     const video = videoRef.current;
-    const canvas = faceapi.createCanvasFromMedia(video);
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
 
-    if (canvasRef.current) {
-      canvasRef.current.replaceWith(canvas);
+    // Set canvas dimensions to match video
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+
+    // Draw the current video frame onto the canvas
+    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+    // Analyze the image using face-api.js
+    const detections = await faceapi
+      .detectAllFaces(canvas, new faceapi.TinyFaceDetectorOptions())
+      .withFaceLandmarks()
+      .withFaceDescriptors()
+      .withAgeAndGender();
+
+    if (detections.length === 0) {
+      alert('No faces detected.');
+      return;
     }
-    canvasRef.current = canvas;
-    canvas.className = 'absolute';
-    const mainEl = document.getElementById('main');
-    if (!mainEl) return;
-    mainEl.style.position = 'relative';
-    mainEl.append(canvas);
 
-    const displaySize = { width: video.width, height: video.height };
-    faceapi.matchDimensions(canvas, displaySize);
+    // Clear the canvas and draw the detections
+    // ctx.clearRect(0, 0, canvas.width, canvas.height);
+    faceapi.draw.drawDetections(canvas, detections);
+    faceapi.draw.drawFaceLandmarks(canvas, detections);
 
-    setInterval(async () => {
-      const detections = await faceapi
-        .detectAllFaces(video, new faceapi.TinyFaceDetectorOptions())
-        .withFaceLandmarks()
-        .withFaceDescriptors()
-        .withAgeAndGender();
+    detections.forEach((detection) => {
+      const { age, gender } = detection;
+      const { x, y } = detection.detection.box;
+      const nosePoints = detection.landmarks.getNose();
+      const noseTip = nosePoints[4];
 
-      const resizedDetections = faceapi.resizeResults(detections, displaySize);
+      const boxSize = 10; // Size of the area around the nose
+      const startX = Math.max(0, Math.round(noseTip.x - boxSize / 2));
+      const startY = Math.max(0, Math.round(noseTip.y - boxSize / 2));
 
-      const ctx = canvas.getContext('2d');
-      if (!ctx) return;
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      faceapi.draw.drawDetections(canvas, resizedDetections);
-      faceapi.draw.drawFaceLandmarks(canvas, resizedDetections);
+      const noseData = ctx.getImageData(startX, startY, boxSize, boxSize);
+      const { r, g, b } = calculateAverageColor(noseData.data);
 
-      resizedDetections.forEach((detection) => {
-        const { age, gender } = detection;
-        const { x, y } = detection.detection.box;
-        const nosePoints = detection.landmarks.getNose();
-        const noseTip = nosePoints[4];
-
-        const boxSize = 10; // 縮小した範囲のサイズ (10x10ピクセル)
-        const startX = Math.max(0, Math.round(noseTip.x - boxSize / 2));
-        const startY = Math.max(0, Math.round(noseTip.y - boxSize / 2));
-
-        const noseData = ctx.getImageData(startX, startY, boxSize, boxSize);
-        const { r, g, b } = calculateAverageColor(noseData.data);
-
-        // RGB値をカラーコードに変換
-        const colorCode = rgbToHex(r, g, b);
-        const text = `${Math.round(age)} years old, ${gender} average Color , ${colorCode}`;
-        ctx.fillStyle = 'red';
-        ctx.fillText(text, x + 45, y - 5); // 顔の上部に表示
-      });
-    }, 1000);
+      // Convert RGB to hex color code
+      const colorCode = rgbToHex(r, g, b);
+      const text = `${Math.round(age)} years old, ${gender}, Average Color: ${colorCode}`;
+      ctx.fillStyle = 'red';
+      ctx.fillText(text, x + 45, y - 5);
+    });
   };
 
-  const calculateAverageColor = (data: Uint8ClampedArray<ArrayBufferLike>) => {
+  const calculateAverageColor = (data: Uint8ClampedArray) => {
     let r = 0,
       g = 0,
       b = 0;
     let count = 0;
 
     for (let i = 0; i < data.length; i += 4) {
-      const alpha = data[i + 3]; // アルファ値（透明度）
+      const alpha = data[i + 3];
       if (alpha > 0) {
-        // 透明なピクセルを除外
-        r += data[i]; // Red
-        g += data[i + 1]; // Green
-        b += data[i + 2]; // Blue
+        r += data[i];
+        g += data[i + 1];
+        b += data[i + 2];
         count++;
       }
     }
@@ -127,6 +122,7 @@ export default function HomePage() {
 
   return (
     <main id="main">
+      <button onClick={handleCaptureAndAnalyze}>Capture and Analyze</button>
       <h1>Face Recognition with Next.js</h1>
       <video
         className="absolute"
@@ -135,8 +131,8 @@ export default function HomePage() {
         muted
         width="640"
         height="480"
-        onPlay={handleVideoPlay}
       />
+      <canvas ref={canvasRef} style={{ display: 'none' }} />
     </main>
   );
 }
