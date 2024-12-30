@@ -24,7 +24,7 @@ export default function HomePage() {
 
     // Analyze the image using face-api.js
     const detections = await faceapi
-      .detectAllFaces(canvas, new faceapi.TinyFaceDetectorOptions())
+      .detectAllFaces(video, new faceapi.TinyFaceDetectorOptions())
       .withFaceLandmarks()
       .withFaceDescriptors()
       .withAgeAndGender();
@@ -42,8 +42,9 @@ export default function HomePage() {
     detections.forEach((detection) => {
       const { age, gender } = detection;
       const { x, y } = detection.detection.box;
-      const nosePoints = detection.landmarks.getNose();
-      const noseTip = nosePoints[4];
+      const nosePoints = detection.landmarks.getRightEye();
+      console.log(nosePoints);
+      const noseTip = nosePoints[3];
 
       const boxSize = 10; // Size of the area around the nose
       const startX = Math.max(0, Math.round(noseTip.x - boxSize / 2));
@@ -54,6 +55,7 @@ export default function HomePage() {
 
       // Convert RGB to hex color code
       const colorCode = rgbToHex(r, g, b);
+      console.log(colorCode);
       const text = `${Math.round(age)} years old, ${gender}, Average Color: ${colorCode}`;
       ctx.fillStyle = 'red';
       ctx.fillText(text, x + 45, y - 5);
@@ -84,7 +86,7 @@ export default function HomePage() {
   };
 
   function rgbToHex(r: number, g: number, b: number) {
-    const toHex = (component: number) => component.toString(16).padStart(2, '0');
+    const toHex = (value: number) => value.toString(16).padStart(2, '0');
     return `#${toHex(r)}${toHex(g)}${toHex(b)}`;
   }
 
@@ -125,14 +127,14 @@ export default function HomePage() {
       <button onClick={handleCaptureAndAnalyze}>Capture and Analyze</button>
       <h1>Face Recognition with Next.js</h1>
       <video
-        className="absolute"
+        // className="absolute"
         ref={videoRef}
         autoPlay
         muted
         width="640"
         height="480"
       />
-      <canvas ref={canvasRef} style={{ display: 'none' }} />
+      <canvas ref={canvasRef} style={{ display: 'block' }} />
     </main>
   );
 }
