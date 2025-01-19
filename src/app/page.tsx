@@ -42,13 +42,13 @@ export default function HomePage() {
     detections.forEach((detection) => {
       const { age, gender } = detection;
       const { x, y } = detection.detection.box;
-      const nosePoints = detection.landmarks.getRightEye();
+      const nosePoints = detection.landmarks.getLeftEye();
       console.log(nosePoints);
-      const noseTip = nosePoints[3];
+      const noseTip = nosePoints[2];
 
       const boxSize = 10; // Size of the area around the nose
-      const startX = Math.max(0, Math.round(noseTip.x - boxSize / 2));
-      const startY = Math.max(0, Math.round(noseTip.y - boxSize / 2));
+      const startX = Math.max(0, Math.round(noseTip.x - boxSize / 2)) - 5;
+      const startY = Math.max(0, Math.round(noseTip.y - boxSize / 2)) + 10;
 
       const noseData = ctx.getImageData(startX, startY, boxSize, boxSize);
       const { r, g, b } = calculateAverageColor(noseData.data);
@@ -58,6 +58,7 @@ export default function HomePage() {
       console.log(colorCode);
       const text = `${Math.round(age)} years old, ${gender}, Average Color: ${colorCode}`;
       ctx.fillStyle = 'red';
+      // ctx.fillText('★', startX, startY);
       ctx.fillText(text, x + 45, y - 5);
     });
   };
