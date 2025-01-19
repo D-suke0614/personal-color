@@ -14,8 +14,19 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Primary: Story = {
+export const Default: Story = {
   args: {
     children: 'Button',
+    onClick: () => {
+      console.log('clicked');
+    },
+    type: 'reset',
+  },
+};
+
+export const Disabled: Story = {
+  args: {
+    children: 'Disabled',
+    disabled: true,
   },
 };
