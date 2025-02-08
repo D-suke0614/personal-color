@@ -17,7 +17,7 @@ const ProgressBar: React.FC<ProgressBarProps> = ({ initialProgress }) => {
   }, [initialProgress]);
 
   return (
-    <div className="relative my-4 h-full">
+    <div className="relative my-4 size-full">
       <div className="h-11 overflow-hidden rounded-full bg-[#b4b3b3] shadow-[3px_3px_3px_#c0c0c0]">
         <div
           className="h-full w-fit rounded-full bg-gradient-to-r from-[#E3FDFB] via-[#FFCEDE] to-[#DCBCF6] transition-all duration-1000 ease-out"
