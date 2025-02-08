@@ -20,7 +20,17 @@ export const Default: Story = {
     onClick: () => {
       console.log('clicked');
     },
-    type: 'reset',
+    type: 'button',
+  },
+};
+
+export const Sample: Story = {
+  args: {
+    children: '診断結果リンクをコピーする',
+    onClick: () => {
+      console.log('clicked');
+    },
+    type: 'button',
   },
 };
 
