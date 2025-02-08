@@ -7,7 +7,7 @@ const meta = {
   component: ProgressBar, // コンポーネント名入れる
   tags: ['autodocs'],
   parameters: {
-    layout: 'centered',
+    layout: 'fullscreen',
   },
 } as Meta<typeof ProgressBar>; // コンポーネント名入れる
 
