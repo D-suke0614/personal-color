@@ -1,23 +1,23 @@
 'use client';
 
-type ButtonProps = {
+type ButtonProps<T> = {
   children: string;
-  onClick?: () => void;
+  onClick?: () => T;
   disabled?: boolean;
   type?: 'button' | 'submit' | 'reset';
 };
 
-const Button = ({
+const Button = <T,>({
   children,
   onClick,
   type = 'button',
   disabled = false,
-}: ButtonProps) => {
-  const baseClass = ` ${disabled ? 'opacity-50' : 'hover:bg-blue-700'}`;
+}: ButtonProps<T>) => {
+  const baseClass = `${disabled ? 'opacity-50' : 'hover:bg-blue-700'}`;
   return (
     <button
       onClick={onClick}
-      className={`rounded-full bg-blue-500 px-4 py-2 font-bold text-white ${baseClass}`}
+      className={`rounded-full bg-blue-500 px-10 py-4 font-bold text-white ${baseClass}`}
       type={type}
       disabled={disabled}
     >
