@@ -17,7 +17,7 @@ const Button = <T,>({
   return (
     <button
       onClick={onClick}
-      className={`min-w-48 rounded-xl bg-primary px-4 py-3 text-center text-2xl font-bold text-black shadow-primary ${stateClass}`}
+      className={`min-w-48 rounded-xl bg-primary px-8 py-3 text-center text-2xl font-bold text-black shadow-primary ${stateClass}`}
       type={type}
       disabled={disabled}
     >
