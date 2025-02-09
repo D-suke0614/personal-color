@@ -17,17 +17,26 @@ const ProgressBar: React.FC<ProgressBarProps> = ({ initialProgress }) => {
   }, [initialProgress]);
 
   return (
-    <div className="relative my-4 size-full">
-      <div className="h-11 overflow-hidden rounded-full bg-[#b4b3b3] shadow-[3px_3px_3px_#c0c0c0]">
-        <div
-          className="h-full w-fit rounded-full bg-gradient-to-r from-[#E3FDFB] via-[#FFCEDE] to-[#DCBCF6] transition-all duration-1000 ease-out"
-          style={{ width: `${progress}%` }}
+    <>
+      <style>{`
+        progress::-webkit-progress-value {
+          background-image: linear-gradient(to right, #E3FDFB, #FFCEDE, #DCBCF6);
+					border-radius: 1.375rem;
+					transition: width 1s ease-in-out;
+					min-width: 3rem;
+        }
+      `}</style>
+      <div className="relative h-11 w-[304px] sm:w-[1196px]">
+        <progress
+          max="100"
+          value={progress}
+          className="h-11 w-full appearance-none rounded-full bg-[#b4b3b3] shadow-[3px_3px_3px_#c0c0c0] [&::-moz-progress-bar]:bg-transparent [&::-webkit-progress-bar]:bg-transparent"
         />
+        <div className="absolute inset-0 flex items-center justify-center text-center font-bold">
+          {progress}%
+        </div>
       </div>
-      <div className="absolute top-0 h-11 w-full text-center font-bold leading-[2.75rem]">
-        {progress}%
-      </div>
-    </div>
+    </>
   );
 };
 
