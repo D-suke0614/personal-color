@@ -13,6 +13,12 @@ export default {
         background: 'var(--background)',
         foreground: 'var(--foreground)',
       },
+      backgroundImage: {
+        primary: 'linear-gradient(90deg, #E2FFFC 0%, #FFCEDE 50%, #DCBCF6 100%)',
+      },
+      boxShadow: {
+        primary: '3px 3px 3px #c0c0c0',
+      },
     },
   },
   plugins: [],

@@ -20,7 +20,7 @@ const ProgressBar: React.FC<ProgressBarProps> = ({ initialProgress }) => {
     <>
       <style>{`
         progress::-webkit-progress-value {
-          background-image: linear-gradient(to right, #E3FDFB, #FFCEDE, #DCBCF6);
+          background-image: linear-gradient(90deg, #E2FFFC 0%, #FFCEDE 50%, #DCBCF6 100%);
 					border-radius: 1.375rem;
 					transition: width 1s ease-in-out;
 					min-width: 3rem;
@@ -31,7 +31,7 @@ const ProgressBar: React.FC<ProgressBarProps> = ({ initialProgress }) => {
         <progress
           max="100"
           value={progress}
-          className="h-11 w-full appearance-none rounded-full bg-[#b4b3b3] shadow-[3px_3px_3px_#c0c0c0] [&::-moz-progress-bar]:bg-transparent [&::-webkit-progress-bar]:bg-transparent"
+          className="h-11 w-full appearance-none rounded-full bg-[#b4b3b3] shadow-primary [&::-moz-progress-bar]:bg-transparent [&::-webkit-progress-bar]:bg-transparent"
         />
         <div className="absolute inset-0 flex items-center justify-center text-center font-bold">
           {progress}%
