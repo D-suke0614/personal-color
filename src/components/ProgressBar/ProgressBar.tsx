@@ -1,21 +1,13 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-
 type ProgressBarProps = {
-  initialProgress: progressPercentage;
+  progressValue: progressValue;
 };
 
 // 仮で10ずつの数値を設定
-type progressPercentage = 0 | 10 | 20 | 30 | 40 | 50 | 60 | 70 | 80 | 90 | 100;
+type progressValue = 0 | 10 | 20 | 30 | 40 | 50 | 60 | 70 | 80 | 90 | 100;
 
-const ProgressBar: React.FC<ProgressBarProps> = ({ initialProgress }) => {
-  const [progress, setProgress] = useState<progressPercentage>(initialProgress);
-
-  useEffect(() => {
-    setProgress(initialProgress);
-  }, [initialProgress]);
-
+const ProgressBar: React.FC<ProgressBarProps> = ({ progressValue }) => {
   return (
     <>
       <style>{`
@@ -30,11 +22,11 @@ const ProgressBar: React.FC<ProgressBarProps> = ({ initialProgress }) => {
       <div className="relative h-11 w-[304px] sm:w-[1196px]">
         <progress
           max="100"
-          value={progress}
+          value={progressValue}
           className="h-11 w-full appearance-none rounded-full bg-[#b4b3b3] shadow-primary [&::-moz-progress-bar]:bg-transparent [&::-webkit-progress-bar]:bg-transparent"
         />
         <div className="absolute inset-0 flex items-center justify-center text-center font-bold">
-          {progress}%
+          {progressValue}%
         </div>
       </div>
     </>

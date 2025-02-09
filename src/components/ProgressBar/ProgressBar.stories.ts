@@ -16,18 +16,18 @@ type Story = StoryObj<typeof meta>;
 
 export const Primary: Story = {
   args: {
-    initialProgress: 0,
+    progressValue: 0,
   },
 };
 
 export const FiftyPercent: Story = {
   args: {
-    initialProgress: 50,
+    progressValue: 50,
   },
 };
 
 export const HundredPercent: Story = {
   args: {
-    initialProgress: 100,
+    progressValue: 100,
   },
 };
