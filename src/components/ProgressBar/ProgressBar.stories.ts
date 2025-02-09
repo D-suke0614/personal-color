@@ -1,21 +1,33 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import ProgressBar from '@/components/ProgressBar/ProgressBar'; // importする
+import ProgressBar from '@/components/ProgressBar/ProgressBar';
 
 const meta = {
-  title: 'Components/ProgressBar', // storybook上のパス
-  component: ProgressBar, // コンポーネント名入れる
+  title: 'Components/ProgressBar',
+  component: ProgressBar,
   tags: ['autodocs'],
   parameters: {
-    layout: 'fullscreen',
+    layout: 'centered',
   },
-} as Meta<typeof ProgressBar>; // コンポーネント名入れる
+} as Meta<typeof ProgressBar>;
 
 export default meta;
-type Story = StoryObj<typeof meta>; //おまじない
+type Story = StoryObj<typeof meta>;
 
 export const Primary: Story = {
   args: {
     initialProgress: 0,
+  },
+};
+
+export const FiftyPercent: Story = {
+  args: {
+    initialProgress: 50,
+  },
+};
+
+export const HundredPercent: Story = {
+  args: {
+    initialProgress: 100,
   },
 };
