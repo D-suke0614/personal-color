@@ -26,6 +26,7 @@ const ProgressBar: React.FC<ProgressBarProps> = ({ initialProgress }) => {
 					min-width: 3rem;
         }
       `}</style>
+      {/* TODO: pxからwidth: 100%に変更したい */}
       <div className="relative h-11 w-[304px] sm:w-[1196px]">
         <progress
           max="100"
