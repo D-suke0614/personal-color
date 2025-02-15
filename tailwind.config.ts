@@ -14,7 +14,7 @@ export default {
         foreground: 'var(--foreground)',
       },
       backgroundImage: {
-        'primary':
+        'primary': 
           'linear-gradient(90deg, #E2FFFC 0%, #FFCEDE 50%, #DCBCF6 100%)',
       },
       boxShadow: {
