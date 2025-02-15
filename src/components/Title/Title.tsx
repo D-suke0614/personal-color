@@ -9,11 +9,11 @@ type TitleProps<T extends 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' = 'h1'> = {
 
 const fontSizeMap: Record<string, string> = {
   h1: 'sm:text-[50px] text-[40px]',
-  h2: 'text-[24px]',
-  h3: 'text-[20px]',
-  h4: 'text-[18px]',
-  h5: 'text-[16px]',
-  h6: 'text-[14px]',
+  h2: 'text-2xl',
+  h3: 'text-xl',
+  h4: 'text-lg',
+  h5: 'text-base',
+  h6: 'text-sm',
 };
 
 const Title = <T extends 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6'>({
@@ -25,10 +25,10 @@ const Title = <T extends 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6'>({
   const Tag = (as || 'h1') as keyof JSX.IntrinsicElements;
 
   const fontClass = isFontKnewave ? 'font-knewave' : 'font-default';
-  const weightClass = isFontBold && 'font-bold';
+  const weightClass = isFontBold ? 'font-bold' : '';
 
   return (
-    <Tag className={`${fontClass} ${weightClass} text-center ${fontSizeMap[Tag] || ''}`}>
+    <Tag className={`${fontClass} ${weightClass} text-center ${fontSizeMap[Tag]}`}>
       {children}
     </Tag>
   );
