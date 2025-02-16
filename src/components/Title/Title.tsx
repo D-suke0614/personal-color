@@ -24,7 +24,7 @@ const Title = <T extends 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6'>({
 }: TitleProps<T>) => {
   const Tag = (as || 'h1') as keyof JSX.IntrinsicElements;
 
-  const fontClass = isFontKnewave ? 'font-knewave' : 'font-default';
+  const fontClass = isFontKnewave ? 'font-knewave' : 'font-sans';
   const weightClass = isFontBold ? 'font-bold' : '';
 
   return (

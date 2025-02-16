@@ -20,7 +20,7 @@ export default {
         primary: '3px 3px 3px #c0c0c0',
       },
       fontFamily: {
-        default: ['Noto Sans Japanese', 'sans-serif'],
+        sans: ['Noto Sans Japanese', 'sans-serif'],
         knewave: ['Knewave', 'cursive'],
       },
     },
