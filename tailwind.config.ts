@@ -20,6 +20,10 @@ export default {
       boxShadow: {
         'primary': '3px 3px 3px #c0c0c0',
       },
+      fontFamily: {
+        sans: ['Noto Sans Japanese', 'sans-serif'],
+        knewave: ['Knewave', 'cursive'],
+      }
     },
   },
   plugins: [],
