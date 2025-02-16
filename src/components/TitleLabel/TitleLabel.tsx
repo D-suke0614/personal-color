@@ -13,7 +13,7 @@ const TitleLabel = ({ children, background }: Props) => {
     <>
       <div
         className={clsx(
-          'relative w-[416px] rounded-md border border-solid border-black bg-white px-4 py-5 text-center text-3xl font-bold after:absolute after:left-3 after:top-4 after:-z-10 after:size-full after:rounded-md after:border after:border-solid after:border-black',
+          'relative w-[416px] rounded-md border-2 border-solid border-black bg-white px-4 py-5 text-center text-3xl font-bold after:absolute after:left-3 after:top-4 after:-z-10 after:size-full after:rounded-md after:border-2 after:border-solid after:border-black',
           `after:bg-[${COLOR_CODES[background]}]`,
         )}
       >
