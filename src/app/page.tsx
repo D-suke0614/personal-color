@@ -1,7 +1,13 @@
+import ResultTemplate from '@/components/ResultTemplate/ResultTemplate';
+
 export default function Home() {
+  const shareImage = {
+    src: '/result/spring_share.png',
+    alt: '私は春イエベ',
+  };
   return (
-    <div>
-      <h1>Personal Color</h1>
-    </div>
+    <>
+      <ResultTemplate result="spring" shareImage={shareImage} />
+    </>
   );
 }
