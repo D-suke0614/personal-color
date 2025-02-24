@@ -16,12 +16,12 @@ type Props = {
   shareImage: Image;
 };
 
+// todo: シェアリンクのgoogle.com部分を結果ページのリンクに置き換える
 const SNS_ITEM_LIST = [
   {
     key: 'line',
-    // https://social-plugins.line.me/lineit/share?url=${window.location.href}$text=任意のテキストを埋め込める
-    shareLink: ``,
-    // shareLink: `https://social-plugins.line.me/lineit/share?url=${window.location.href}`,
+    // https://social-plugins.line.me/lineit/share?url=google.com$text=任意のテキストを埋め込める
+    shareLink: `https://social-plugins.line.me/lineit/share?url=google.com`,
     ...snsImagePaths.line,
   },
   {
@@ -31,20 +31,24 @@ const SNS_ITEM_LIST = [
   },
   {
     key: 'x',
-    // https://twitter.com/intent/tweet?url=${window.location.href}&text=ポストさせたい任意のテキストを埋め込める
-    shareLink: ``,
-    // shareLink: `https://twitter.com/intent/tweet?url=${window.location.href}`,
+    // https://twitter.com/intent/tweet?url=google.com&text=ポストさせたい任意のテキストを埋め込める
+    shareLink: `https://twitter.com/intent/tweet?url=google.com`,
     ...snsImagePaths.x,
   },
   {
     key: 'facebook',
-    shareLink: ``,
-    // shareLink: `https://www.facebook.com/share.php?u=${window.location.href}`,
+    shareLink: `https://www.facebook.com/share.php?u=google.com`,
     ...snsImagePaths.facebook,
   },
 ];
 
 const ResultTemplate = ({ result, shareImage }: Props) => {
+  const copyToClipboard = () => {
+    navigator.clipboard.writeText(window.location.href);
+    // todo: トースト実装後差し替え
+    window.alert('copied!');
+  };
+
   return (
     <div className="w-screen pb-32">
       {/* ① */}
@@ -85,7 +89,7 @@ const ResultTemplate = ({ result, shareImage }: Props) => {
           SNSで友達やフォロワーに診断結果をシェアしてみよう！
         </p>
         <div className="mt-16 text-center">
-          <TextButton>診断結果リンクをコピーする</TextButton>
+          <TextButton onClick={copyToClipboard}>診断結果リンクをコピーする</TextButton>
         </div>
       </section>
     </div>
