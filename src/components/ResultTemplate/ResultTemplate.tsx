@@ -2,19 +2,22 @@
 
 import TextButton from '@/components/TextButton/TextButton';
 import TitleLabel from '@/components/TitleLabel/TitleLabel';
+import { resultImagePaths } from '@/constants/resultImagePaths';
+import { resultText } from '@/constants/resultText';
 import { snsImagePaths } from '@/constants/snsImagePaths';
 import Image from 'next/image';
 import Link from 'next/link';
 
-type Image = {
-  src: string;
-  alt: string;
-};
-
 type Props = {
   result: 'spring' | 'summer' | 'autumn' | 'winter';
-  shareImage: Image;
 };
+
+const RESULT_TEXT = {
+  spring: 'イエベ春',
+  summer: 'ブルベ夏',
+  autumn: 'イエベ秋',
+  winter: 'ブルベ冬',
+} as const;
 
 // todo: シェアリンクのgoogle.com部分を結果ページのリンクに置き換える
 const SNS_ITEM_LIST = [
@@ -40,9 +43,12 @@ const SNS_ITEM_LIST = [
     shareLink: `https://www.facebook.com/share.php?u=google.com`,
     ...snsImagePaths.facebook,
   },
-];
+] as const;
 
-const ResultTemplate = ({ result, shareImage }: Props) => {
+const ResultTemplate = ({ result }: Props) => {
+  const imagePaths = resultImagePaths[result];
+  const resultTexts = resultText[result];
+
   const copyToClipboard = () => {
     navigator.clipboard.writeText(window.location.href);
     // todo: トースト実装後差し替え
@@ -56,15 +62,32 @@ const ResultTemplate = ({ result, shareImage }: Props) => {
       {/* ③ */}
       {/* ④ */}
       {/* ⑤ */}
-      {/* ⑥ */}
-      <section>
-        <div className="mt-36 px-48 text-left">
+      <section className="mt-32">
+        <div className="px-48 text-left">
+          <TitleLabel
+            background={result}
+          >{`${RESULT_TEXT[result]}さんのヘアカラー`}</TitleLabel>
+        </div>
+        <Image
+          className="mx-auto mt-16 px-44"
+          src={imagePaths.hair.src}
+          alt={imagePaths.hair.alt}
+          width={794}
+          height={750}
+        />
+        <p className="mx-auto mt-16 w-1/2 whitespace-pre-line text-left font-sans">
+          {resultTexts.hair}
+        </p>
+      </section>
+
+      <section className="mt-32">
+        <div className="px-48 text-left">
           <TitleLabel background={result}>SNSでシェア</TitleLabel>
         </div>
         <Image
           className="mt-16 px-44"
-          src={shareImage.src}
-          alt={shareImage.alt}
+          src={imagePaths.share.src}
+          alt={imagePaths.share.alt}
           width={1450}
           height={1030}
         />
