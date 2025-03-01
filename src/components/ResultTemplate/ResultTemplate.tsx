@@ -61,7 +61,24 @@ const ResultTemplate = ({ result }: Props) => {
       {/* ② */}
       {/* ③ */}
       {/* ④ */}
-      {/* ⑤ */}
+      <section className="mt-32">
+        <div className="px-48 text-left">
+          <TitleLabel
+            background={result}
+          >{`${RESULT_TEXT[result]}さんに似合わない色`}</TitleLabel>
+        </div>
+        <Image
+          className="mx-auto mt-16 px-44"
+          src={imagePaths.badFashion.src}
+          alt={imagePaths.badFashion.alt}
+          width={794}
+          height={750}
+        />
+        <p className="mx-auto mt-16 w-1/2 whitespace-pre-line text-left font-sans">
+          {resultTexts.badFashion}
+        </p>
+      </section>
+
       <section className="mt-32">
         <div className="px-48 text-left">
           <TitleLabel
