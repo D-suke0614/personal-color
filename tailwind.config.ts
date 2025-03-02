@@ -2,10 +2,8 @@ import type { Config } from 'tailwindcss';
 
 export default {
   content: [
-    './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
-    './src/components/**/*.{js,ts,jsx,tsx,mdx}',
-    './src/app/**/*.{js,ts,jsx,tsx,mdx}',
     './stories/**/*.{js,ts,jsx,tsx,mdx}',
+    './src/**/*.{js,ts,jsx,tsx}',
   ],
   theme: {
     extend: {
@@ -14,13 +12,23 @@ export default {
         foreground: 'var(--foreground)',
       },
       backgroundImage: {
-        'primary': 
-          'linear-gradient(90deg, #E2FFFC 0%, #FFCEDE 50%, #DCBCF6 100%)',
+        primary: 'linear-gradient(90deg, #E2FFFC 0%, #FFCEDE 50%, #DCBCF6 100%)',
       },
       boxShadow: {
-        'primary': '3px 3px 3px #c0c0c0',
+        primary: '3px 3px 3px #c0c0c0',
       },
+      fontFamily: {
+        sans: ['Noto Sans Japanese', 'sans-serif'],
+        knewave: ['Knewave', 'cursive'],
+      }
     },
   },
+  // 動的に生成したクラスが適用されなかったので、safelistに追記。
+  safelist: [
+    'after:bg-[#FFCEDF]',
+    'after:bg-[#CEDBFF]',
+    'after:bg-[#B67935]',
+    'after:bg-[#1E398B]',
+  ],
   plugins: [],
 } satisfies Config;
