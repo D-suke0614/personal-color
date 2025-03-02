@@ -32,7 +32,9 @@ const Table = <T,>({ result, kind }: TableProps<T>) => {
         <tbody>
           {data.map((text, i) => (
             <tr
-              className={i % 2 == 1 ? 'bg-[#F8F7F7' : `bg-[${TABLE_COLOR_CODES[result]}]`}
+              className={
+                i % 2 == 1 ? 'bg-[#F8F7F7]' : `bg-[${TABLE_COLOR_CODES[result]}]`
+              }
               key={i}
             >
               <td className="h-32 w-1/4 border-r border-[#DDDDDD] text-center text-base">
