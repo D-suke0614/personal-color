@@ -1,5 +1,6 @@
 'use client';
 
+import Table from '@/components/Table/Table';
 import TextButton from '@/components/TextButton/TextButton';
 import TitleLabel from '@/components/TitleLabel/TitleLabel';
 import { resultImagePaths } from '@/constants/resultImagePaths';
@@ -61,6 +62,10 @@ const ResultTemplate = ({ result }: Props) => {
       {/* ② */}
       {/* ③ */}
       {/* ④ */}
+      <Table result={result} kind="feature" />
+
+      <Table result={result} kind="fashionColor" />
+
       <section className="mt-32">
         <div className="px-48 text-left">
           <TitleLabel
