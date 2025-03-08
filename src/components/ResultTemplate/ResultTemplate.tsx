@@ -62,9 +62,9 @@ const ResultTemplate = ({ result }: Props) => {
       {/* ② */}
       {/* ③ */}
       {/* ④ */}
-      <Table result={result} kind="feature" />
+      <Table resultText={resultTexts.feature} result={result} kind="feature" />
 
-      <Table result={result} kind="fashionColor" />
+      <Table resultText={resultTexts.fashionColor} result={result} kind="fashionColor" />
 
       <section className="mt-32">
         <div className="px-48 text-left">

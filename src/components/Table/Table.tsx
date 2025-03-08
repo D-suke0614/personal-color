@@ -1,9 +1,9 @@
 'use client';
 
 import { TABLE_COLOR_CODES } from '@/constants/colorCodes';
-import { resultText } from '@/constants/resultText';
 
-type TableProps<T> = {
+type TableProps = {
+  resultText: string[];
   result: 'spring' | 'summer' | 'autumn' | 'winter';
   kind: 'feature' | 'fashionColor';
 };
@@ -20,17 +20,14 @@ const FASHION_LABEL = [
   'パープル系',
 ] as const;
 
-const Table = <T,>({ result, kind }: TableProps<T>) => {
-  const data =
-    kind === 'feature' ? resultText[result].feature : resultText[result].fashionColor;
-
+const Table = ({ resultText, result, kind }: TableProps) => {
   const label = kind === 'feature' ? FEATURE_LABEL : FASHION_LABEL;
 
   return (
     <div className="w-screen">
       <table className="w-full table-fixed">
         <tbody>
-          {data.map((text, i) => (
+          {resultText.map((text, i) => (
             <tr
               className={
                 i % 2 == 1 ? 'bg-[#F8F7F7]' : `bg-[${TABLE_COLOR_CODES[result]}]`
