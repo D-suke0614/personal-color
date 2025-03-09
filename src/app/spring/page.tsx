@@ -1,7 +1,5 @@
+import ResultTemplate from '@/components/ResultTemplate/ResultTemplate';
+
 export default function Page() {
-  return (
-    <div>
-      <h1>Spring</h1>
-    </div>
-  );
+  return <ResultTemplate result="spring" />;
 }
