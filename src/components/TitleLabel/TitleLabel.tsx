@@ -1,5 +1,6 @@
 'use client';
 
+import Title from '@/components/Title/Title';
 import { COLOR_CODES } from '@/constants/colorCodes';
 import clsx from 'clsx';
 
@@ -17,8 +18,7 @@ const TitleLabel = ({ children, background }: Props) => {
           `after:bg-[${COLOR_CODES[background]}]`,
         )}
       >
-        {/* タイトルラベルが2行になることは未想定 */}
-        {children}
+        <Title as="h2">{children}</Title>
       </div>
     </>
   );

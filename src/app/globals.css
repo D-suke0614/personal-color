@@ -7,3 +7,8 @@ body {
   background-color: #fff;
   font-family: Arial, Helvetica, sans-serif;
 }
+
+/* storybookのスタイル修正 */
+#storybook-root {
+  padding: 0 !important;
+}

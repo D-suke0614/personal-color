@@ -1,7 +1,9 @@
+import ResultTemplate from '@/components/ResultTemplate/ResultTemplate';
+
 export default function Home() {
   return (
-    <div>
-      <h1>Personal Color</h1>
-    </div>
+    <>
+      <ResultTemplate result="spring" />
+    </>
   );
 }
