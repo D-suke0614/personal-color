@@ -29,6 +29,10 @@ export default {
     'after:bg-[#CEDBFF]',
     'after:bg-[#B67935]',
     'after:bg-[#1E398B]',
+    'bg-[#FDF0D9]',
+    'bg-[#DBEAF7]',
+    'bg-[#DED797]',
+    'bg-[#BCD3DF]',
   ],
   plugins: [],
 } satisfies Config;
