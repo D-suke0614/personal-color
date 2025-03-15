@@ -1,10 +1,7 @@
 import type { Config } from 'tailwindcss';
 
 export default {
-  content: [
-    './stories/**/*.{js,ts,jsx,tsx,mdx}',
-    './src/**/*.{js,ts,jsx,tsx}',
-  ],
+  content: ['./stories/**/*.{js,ts,jsx,tsx,mdx}', './src/**/*.{js,ts,jsx,tsx}'],
   theme: {
     extend: {
       colors: {
@@ -20,7 +17,7 @@ export default {
       fontFamily: {
         sans: ['Noto Sans Japanese', 'sans-serif'],
         knewave: ['Knewave', 'cursive'],
-      }
+      },
     },
   },
   // 動的に生成したクラスが適用されなかったので、safelistに追記。
@@ -29,6 +26,10 @@ export default {
     'after:bg-[#CEDBFF]',
     'after:bg-[#B67935]',
     'after:bg-[#1E398B]',
+    'bg-[#F6EECC]',
+    'bg-[#DBEBF8]',
+    'bg-[#DFD796]',
+    'bg-[#BCD3DF]',
   ],
   plugins: [],
 } satisfies Config;
