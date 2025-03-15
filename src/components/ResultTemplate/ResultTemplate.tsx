@@ -1,5 +1,6 @@
 'use client';
 
+import Table from '@/components/Table/Table';
 import TextButton from '@/components/TextButton/TextButton';
 import Title from '@/components/Title/Title';
 import TitleLabel from '@/components/TitleLabel/TitleLabel';
@@ -130,6 +131,10 @@ const ResultTemplate = ({ result }: Props) => {
       {/* ② */}
       {/* ③ */}
       {/* ④ */}
+      <Table resultText={resultTexts.feature} result={result} kind="feature" />
+
+      <Table resultText={resultTexts.fashionColor} result={result} kind="fashionColor" />
+
       <section className="mt-32">
         <div className="px-48 text-left">
           <TitleLabel
