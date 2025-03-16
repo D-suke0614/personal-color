@@ -4,12 +4,14 @@ import Table from '@/components/Table/Table';
 import TextButton from '@/components/TextButton/TextButton';
 import Title from '@/components/Title/Title';
 import TitleLabel from '@/components/TitleLabel/TitleLabel';
+import Toast from '@/components/Toast/Toast';
 import { resultImagePaths } from '@/constants/resultImagePaths';
 import { resultText } from '@/constants/resultText';
 import { snsImagePaths } from '@/constants/snsImagePaths';
 import clsx from 'clsx';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useState } from 'react';
 
 type Props = {
   result: 'spring' | 'summer' | 'autumn' | 'winter';
@@ -82,11 +84,14 @@ const SNS_ITEM_LIST = [
 const ResultTemplate = ({ result }: Props) => {
   const imagePaths = resultImagePaths[result];
   const resultTexts = resultText[result];
+  const [isShow, setIsShow] = useState(false);
 
   const copyToClipboard = () => {
     navigator.clipboard.writeText(window.location.href);
-    // todo: トースト実装後差し替え
-    window.alert('copied!');
+    setIsShow(true);
+    setTimeout(() => {
+      setIsShow(false);
+    }, 3000);
   };
 
   return (
@@ -176,7 +181,7 @@ const ResultTemplate = ({ result }: Props) => {
           <TitleLabel background={result}>SNSでシェア</TitleLabel>
         </div>
         <Image
-          className="mt-16 px-44"
+          className="mx-auto mt-16 px-44"
           src={imagePaths.share.src}
           alt={imagePaths.share.alt}
           width={1450}
@@ -206,6 +211,9 @@ const ResultTemplate = ({ result }: Props) => {
           <TextButton onClick={copyToClipboard}>診断結果リンクをコピーする</TextButton>
         </div>
       </section>
+      <div className="mx-[500px] mt-9 text-center">
+        <Toast message="コピーしました" isShow={isShow} />
+      </div>
     </div>
   );
 };
