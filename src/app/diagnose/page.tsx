@@ -39,39 +39,23 @@ export default function Page() {
     faceapi.draw.drawDetections(canvas, detections);
     faceapi.draw.drawFaceLandmarks(canvas, detections);
 
-    detections.forEach((detection) => {
-      // const { age, gender } = detection;
-      // const { x, y } = detection.detection.box;
-
-      // // 鼻
-      // const nosePoints = detection.landmarks.getLeftEye();
-      // const noseTip = nosePoints[2];
-
-      // const boxSize = 10; // Size of the area around the nose
-      // const startX = Math.max(0, Math.round(noseTip.x - boxSize / 2)) - 5;
-      // const startY = Math.max(0, Math.round(noseTip.y - boxSize / 2)) + 10;
-
-      // const noseData = ctx.getImageData(startX, startY, boxSize, boxSize);
-      // const { r, g, b } = calculateAverageColor(noseData.data);
-
-      // // Convert RGB to hex color code
-      // const colorCode = rgbToHex(r, g, b);
-      // console.log('colorCode', colorCode);
-
+    const result = detections.map((detection) => {
+      const hairBrightColorCode = getHairBrightColorCode(detection, ctx);
       const hairDarkColorCode = getHairDarkColorCode(detection, ctx);
-      console.log('髪の暗い色：', hairDarkColorCode);
-
       const skinBrightColorCode = getSkinBrightColorCode(detection, ctx);
-      console.log('肌の明るい色：', skinBrightColorCode);
-
       const skinDarkColorCode = getSkinDarkColorCode(detection, ctx);
-      console.log('肌の暗い色：', skinDarkColorCode);
+      const eyeColorCode = getEyeColorCode(detection, ctx);
 
-      // const text = `${Math.round(age)} years old, ${gender}, Average Color: ${colorCode}`;
-      // ctx.fillStyle = 'red';
-      // ctx.fillText('★', startX, startY);
-      // ctx.fillText(text, x + 45, y - 5);
+      // カラーコードをここで配列にして返す
+      return {
+        hairBrightColorCode,
+        hairDarkColorCode,
+        skinBrightColorCode,
+        skinDarkColorCode,
+        eyeColorCode,
+      };
     });
+    console.log(result);
   };
 
   const calculateAverageColor = (data: Uint8ClampedArray) => {
@@ -101,6 +85,34 @@ export default function Page() {
     const toHex = (value: number) => value.toString(16).padStart(2, '0');
     return `#${toHex(r)}${toHex(g)}${toHex(b)}`;
   }
+
+  // 髪の明るい色
+  const getHairBrightColorCode = (detection: any, ctx: any) => {
+    const jawOutLinePoints = detection.landmarks.getJawOutline();
+    const jawOutLineTip0 = jawOutLinePoints[0];
+    const jawOutLineTip4 = jawOutLinePoints[4];
+    const jawOutLineTip8 = jawOutLinePoints[8];
+
+    const hairDarkBoxSize = 5;
+    const startHairDarkStartX = jawOutLineTip8._x;
+    const startHairBrightStartY =
+      jawOutLineTip0._y - (jawOutLineTip4._y - jawOutLineTip0._y);
+
+    const hairDarkData = ctx.getImageData(
+      startHairDarkStartX,
+      startHairBrightStartY,
+      hairDarkBoxSize,
+      hairDarkBoxSize,
+    );
+    const { r, g, b } = calculateAverageColor(hairDarkData.data);
+    const hairBrightColorCode = rgbToHex(r, g, b);
+
+    ctx.font = '5px Arial';
+    ctx.fillStyle = 'pink';
+    ctx.fillText('★', startHairDarkStartX, startHairBrightStartY);
+
+    return hairBrightColorCode;
+  };
 
   // 髪の暗い色
   const getHairDarkColorCode = (detection: any, ctx: any) => {
@@ -195,6 +207,30 @@ export default function Page() {
     ctx.fillText('★', startSkinDarkStartX, startSkinDarkStartY);
 
     return skinDarkColorCode;
+  };
+
+  // 瞳の色
+  const getEyeColorCode = (detection: any, ctx: any) => {
+    const nosePoints = detection.landmarks.getLeftEye();
+    const noseTip1 = nosePoints[1];
+    const noseTip4 = nosePoints[4];
+
+    const midX = (noseTip1._x + noseTip4._x) / 2;
+    const midY = (noseTip1._y + noseTip4._y) / 2;
+
+    const boxSize = 5;
+    const startX = Math.max(0, Math.round(midX - boxSize / 2));
+    const startY = Math.max(0, Math.round(midY - boxSize / 2));
+
+    const imageData = ctx.getImageData(startX, startY, boxSize, boxSize);
+    const { r, g, b } = calculateAverageColor(imageData.data);
+    const eyeColorCode = rgbToHex(r, g, b);
+
+    ctx.font = '5px Arial';
+    ctx.fillStyle = 'yellow';
+    ctx.fillText('★', startX, startY);
+
+    return eyeColorCode;
   };
 
   useEffect(() => {
