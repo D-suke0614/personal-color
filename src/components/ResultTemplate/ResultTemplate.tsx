@@ -11,7 +11,7 @@ import { snsImagePaths } from '@/constants/snsImagePaths';
 import clsx from 'clsx';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 type Props = {
   result: 'spring' | 'summer' | 'autumn' | 'winter';
@@ -59,8 +59,12 @@ const ResultTemplate = ({ result }: Props) => {
   const imagePaths = resultImagePaths[result];
   const resultTexts = resultText[result];
   const [isShow, setIsShow] = useState(false);
+  const [pageUrl, setPageUrl] = useState('');
 
-  const pageUrl = window.location.href;
+  useEffect(() => {
+    setPageUrl(window.location.href);
+  }, [pageUrl]);
+
   const SNS_ITEM_LIST = [
     {
       key: 'line',
