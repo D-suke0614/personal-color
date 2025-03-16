@@ -56,11 +56,12 @@ const BG_COLOR = {
 } as const;
 
 // todo: シェアリンクのgoogle.com部分を結果ページのリンクに置き換える
+const pageUrl = window.location.href;
 const SNS_ITEM_LIST = [
   {
     key: 'line',
     // https://social-plugins.line.me/lineit/share?url=google.com$text=任意のテキストを埋め込める
-    shareLink: `https://social-plugins.line.me/lineit/share?url=google.com`,
+    shareLink: `https://social-plugins.line.me/lineit/share?url=${pageUrl}`,
     ...snsImagePaths.line,
   },
   {
@@ -71,12 +72,12 @@ const SNS_ITEM_LIST = [
   {
     key: 'x',
     // https://twitter.com/intent/tweet?url=google.com&text=ポストさせたい任意のテキストを埋め込める
-    shareLink: `https://twitter.com/intent/tweet?url=google.com`,
+    shareLink: `https://twitter.com/intent/tweet?url=${pageUrl}`,
     ...snsImagePaths.x,
   },
   {
     key: 'facebook',
-    shareLink: `https://www.facebook.com/share.php?u=google.com`,
+    shareLink: `https://www.facebook.com/share.php?u=${pageUrl}`,
     ...snsImagePaths.facebook,
   },
 ] as const;
