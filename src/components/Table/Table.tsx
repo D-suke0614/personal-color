@@ -29,7 +29,7 @@ const Table = ({ resultText, result, kind }: TableProps) => {
   const label = kind === 'feature' ? FEATURE_LABEL : FASHION_LABEL;
 
   return (
-    <div className="">
+    <div>
       <table className="w-full table-fixed">
         <tbody>
           {resultText.map((data, i) => (
