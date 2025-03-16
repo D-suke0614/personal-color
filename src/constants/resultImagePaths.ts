@@ -4,6 +4,10 @@ export const resultImagePaths = {
       src: '/result/spring/color.png',
       alt: 'イエベ春',
     },
+    fashion: {
+      src: '/result/spring/fashion.png',
+      alt: 'あなたのファッション',
+    },
     badFashion: {
       src: '/result/spring/bad-fashion.png',
       alt: 'イエベ春さんに似合わない色',
@@ -21,6 +25,10 @@ export const resultImagePaths = {
     color: {
       src: '/result/summer/color.png',
       alt: 'ブルベ夏',
+    },
+    fashion: {
+      src: '/result/summer/fashion.png',
+      alt: 'あなたのファッション',
     },
     badFashion: {
       src: '/result/summer/bad-fashion.png',
@@ -40,6 +48,10 @@ export const resultImagePaths = {
       src: '/result/autumn/color.png',
       alt: 'イエベ秋',
     },
+    fashion: {
+      src: '/result/autumn/fashion.png',
+      alt: 'あなたのファッション',
+    },
     badFashion: {
       src: '/result/autumn/bad-fashion.png',
       alt: 'イエベ秋さんに似合わない色',
@@ -57,6 +69,10 @@ export const resultImagePaths = {
     color: {
       src: '/result/winter/color.png',
       alt: 'ブルベ冬',
+    },
+    fashion: {
+      src: '/result/winter/fashion.png',
+      alt: 'あなたのファッション',
     },
     badFashion: {
       src: '/result/winter/bad-fashion.png',

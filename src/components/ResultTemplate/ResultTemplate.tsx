@@ -138,7 +138,28 @@ const ResultTemplate = ({ result }: Props) => {
       {/* ④ */}
       <Table resultText={resultTexts.feature} result={result} kind="feature" />
 
-      <Table resultText={resultTexts.fashionColor} result={result} kind="fashionColor" />
+      <section className="mt-32">
+        <div className="px-48 text-left">
+          <TitleLabel background={result}>あなたのファッション</TitleLabel>
+        </div>
+        <Image
+          className="mx-auto mt-16 px-44"
+          src={imagePaths.fashion.src}
+          alt={imagePaths.fashion.alt}
+          width={722}
+          height={794}
+        />
+        <p className="mx-auto mt-16 w-1/2 whitespace-pre-line text-center">
+          {resultTexts.fashion}
+        </p>
+        <div className="mx-44 mt-16">
+          <Table
+            resultText={resultTexts.fashionColor}
+            result={result}
+            kind="fashionColor"
+          />
+        </div>
+      </section>
 
       <section className="mt-32">
         <div className="px-48 text-left">
