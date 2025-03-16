@@ -1,22 +1,58 @@
 'use client';
 
+import Table from '@/components/Table/Table';
 import TextButton from '@/components/TextButton/TextButton';
+import Title from '@/components/Title/Title';
 import TitleLabel from '@/components/TitleLabel/TitleLabel';
+import Toast from '@/components/Toast/Toast';
 import { resultImagePaths } from '@/constants/resultImagePaths';
 import { resultText } from '@/constants/resultText';
 import { snsImagePaths } from '@/constants/snsImagePaths';
+import clsx from 'clsx';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useState } from 'react';
 
 type Props = {
   result: 'spring' | 'summer' | 'autumn' | 'winter';
 };
 
 const RESULT_TEXT = {
-  spring: 'イエベ春',
-  summer: 'ブルベ夏',
-  autumn: 'イエベ秋',
-  winter: 'ブルベ冬',
+  spring: {
+    label: '春 Spring',
+    prefix: 'イエベ春',
+    title: 'Spring',
+    base: 'Yellow Base',
+    catchphrase: 'かわいい/元気/明るい',
+  },
+  summer: {
+    label: '夏 Summer',
+    prefix: 'ブルベ夏',
+    title: 'Summer',
+    base: 'Blue Base',
+    catchphrase: 'くすんだオシャレな色',
+  },
+  autumn: {
+    label: '秋 Autumn',
+    prefix: 'イエベ秋',
+    title: 'Autumn',
+    base: 'Yellow Base',
+    catchphrase: '高級感&落ち着いた色',
+  },
+  winter: {
+    label: '冬 Winter',
+    prefix: 'ブルベ冬',
+    title: 'Winter',
+    base: 'Blue Base',
+    catchphrase: '暗く鮮やかな色',
+  },
+} as const;
+
+const BG_COLOR = {
+  spring: '#F6EECC',
+  summer: '#DBEBF8',
+  autumn: '#DFD796',
+  winter: '#BCD3DF',
 } as const;
 
 // todo: シェアリンクのgoogle.com部分を結果ページのリンクに置き換える
@@ -48,24 +84,67 @@ const SNS_ITEM_LIST = [
 const ResultTemplate = ({ result }: Props) => {
   const imagePaths = resultImagePaths[result];
   const resultTexts = resultText[result];
+  const [isShow, setIsShow] = useState(false);
 
   const copyToClipboard = () => {
     navigator.clipboard.writeText(window.location.href);
-    // todo: トースト実装後差し替え
-    window.alert('copied!');
+    setIsShow(true);
+    setTimeout(() => {
+      setIsShow(false);
+    }, 3000);
   };
 
   return (
     <div className="w-screen pb-32">
-      {/* ① */}
+      <section
+        className={clsx('pb-36 pt-12 text-xl font-bold', `bg-[${BG_COLOR[result]}]`)}
+      >
+        <div className="relative z-0 px-48 text-left">
+          <TitleLabel background={result}>{`${RESULT_TEXT[result].label}`}</TitleLabel>
+          <div className="mt-12 flex flex-col gap-y-6 text-center">
+            <div>
+              {/* storybookだとフォントおかしいけど、ページでみたらちゃん出てる？ */}
+              {/* todo: title文字サイズとタグを分離して設定できるようにする */}
+              {/* todo: というか、h1は「イエベ春」とかの方がよい？ここら辺踏まえて、コンポーネントについても調整したい */}
+              <Title as="h1" isFontKnewave={true} isFontBold={true}>
+                {RESULT_TEXT[result].title}
+              </Title>
+              <div className="mt-8">{RESULT_TEXT[result].prefix}</div>
+            </div>
+            <div>{RESULT_TEXT[result].base}</div>
+          </div>
+        </div>
+        <Image
+          className="mx-auto mt-16 px-44"
+          width={745}
+          height={390}
+          src={imagePaths.color.src}
+          alt={imagePaths.color.alt}
+        />
+        <div className="mt-20 text-white">
+          <span className="mx-auto block w-fit rounded-md bg-black p-2">
+            一言で言うと
+          </span>
+        </div>
+        <div className="mt-14 text-4xl">
+          <span className="mx-auto block w-fit rounded-md border-2 border-black bg-[#FFCEDF] p-5">
+            {RESULT_TEXT[result].catchphrase}
+          </span>
+        </div>
+        <p className="mt-24 whitespace-pre-line text-center">{resultTexts.color}</p>
+      </section>
       {/* ② */}
       {/* ③ */}
       {/* ④ */}
+      <Table resultText={resultTexts.feature} result={result} kind="feature" />
+
+      <Table resultText={resultTexts.fashionColor} result={result} kind="fashionColor" />
+
       <section className="mt-32">
         <div className="px-48 text-left">
           <TitleLabel
             background={result}
-          >{`${RESULT_TEXT[result]}さんに似合わない色`}</TitleLabel>
+          >{`${RESULT_TEXT[result].label}さんに似合わない色`}</TitleLabel>
         </div>
         <Image
           className="mx-auto mt-16 px-44"
@@ -83,7 +162,7 @@ const ResultTemplate = ({ result }: Props) => {
         <div className="px-48 text-left">
           <TitleLabel
             background={result}
-          >{`${RESULT_TEXT[result]}さんのヘアカラー`}</TitleLabel>
+          >{`${RESULT_TEXT[result].prefix}さんのヘアカラー`}</TitleLabel>
         </div>
         <Image
           className="mx-auto mt-16 px-44"
@@ -102,7 +181,7 @@ const ResultTemplate = ({ result }: Props) => {
           <TitleLabel background={result}>SNSでシェア</TitleLabel>
         </div>
         <Image
-          className="mt-16 px-44"
+          className="mx-auto mt-16 px-44"
           src={imagePaths.share.src}
           alt={imagePaths.share.alt}
           width={1450}
@@ -132,6 +211,9 @@ const ResultTemplate = ({ result }: Props) => {
           <TextButton onClick={copyToClipboard}>診断結果リンクをコピーする</TextButton>
         </div>
       </section>
+      <div className="mx-[500px] mt-9 text-center">
+        <Toast message="コピーしました" isShow={isShow} />
+      </div>
     </div>
   );
 };
