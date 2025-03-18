@@ -11,7 +11,7 @@ import { snsImagePaths } from '@/constants/snsImagePaths';
 import clsx from 'clsx';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 type Props = {
   result: 'spring' | 'summer' | 'autumn' | 'winter';
@@ -55,37 +55,40 @@ const BG_COLOR = {
   winter: '#BCD3DF',
 } as const;
 
-// todo: シェアリンクのgoogle.com部分を結果ページのリンクに置き換える
-const SNS_ITEM_LIST = [
-  {
-    key: 'line',
-    // https://social-plugins.line.me/lineit/share?url=google.com$text=任意のテキストを埋め込める
-    shareLink: `https://social-plugins.line.me/lineit/share?url=google.com`,
-    ...snsImagePaths.line,
-  },
-  {
-    key: 'insta',
-    shareLink: ``,
-    ...snsImagePaths.insta,
-  },
-  {
-    key: 'x',
-    // https://twitter.com/intent/tweet?url=google.com&text=ポストさせたい任意のテキストを埋め込める
-    shareLink: `https://twitter.com/intent/tweet?url=google.com`,
-    ...snsImagePaths.x,
-  },
-  {
-    key: 'facebook',
-    shareLink: `https://www.facebook.com/share.php?u=google.com`,
-    ...snsImagePaths.facebook,
-  },
-] as const;
-
 const ResultTemplate = ({ result }: Props) => {
   const imagePaths = resultImagePaths[result];
   const resultTexts = resultText[result];
   const [isShow, setIsShow] = useState(false);
+  const [pageUrl, setPageUrl] = useState('');
 
+  useEffect(() => {
+    setPageUrl(window.location.href);
+  }, [pageUrl]);
+
+  const SNS_ITEM_LIST = [
+    {
+      key: 'line',
+      // https://social-plugins.line.me/lineit/share?url=google.com$text=任意のテキストを埋め込める
+      shareLink: `https://social-plugins.line.me/lineit/share?url=${pageUrl}`,
+      ...snsImagePaths.line,
+    },
+    {
+      key: 'insta',
+      shareLink: ``,
+      ...snsImagePaths.insta,
+    },
+    {
+      key: 'x',
+      // https://twitter.com/intent/tweet?url=google.com&text=ポストさせたい任意のテキストを埋め込める
+      shareLink: `https://twitter.com/intent/tweet?url=${pageUrl}`,
+      ...snsImagePaths.x,
+    },
+    {
+      key: 'facebook',
+      shareLink: `https://www.facebook.com/share.php?u=${pageUrl}`,
+      ...snsImagePaths.facebook,
+    },
+  ] as const;
   const copyToClipboard = () => {
     navigator.clipboard.writeText(window.location.href);
     setIsShow(true);
