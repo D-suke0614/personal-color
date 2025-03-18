@@ -11,7 +11,7 @@ import { snsImagePaths } from '@/constants/snsImagePaths';
 import clsx from 'clsx';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 type Props = {
   result: 'spring' | 'summer' | 'autumn' | 'winter';
@@ -55,37 +55,40 @@ const BG_COLOR = {
   winter: '#BCD3DF',
 } as const;
 
-// todo: シェアリンクのgoogle.com部分を結果ページのリンクに置き換える
-const SNS_ITEM_LIST = [
-  {
-    key: 'line',
-    // https://social-plugins.line.me/lineit/share?url=google.com$text=任意のテキストを埋め込める
-    shareLink: `https://social-plugins.line.me/lineit/share?url=google.com`,
-    ...snsImagePaths.line,
-  },
-  {
-    key: 'insta',
-    shareLink: ``,
-    ...snsImagePaths.insta,
-  },
-  {
-    key: 'x',
-    // https://twitter.com/intent/tweet?url=google.com&text=ポストさせたい任意のテキストを埋め込める
-    shareLink: `https://twitter.com/intent/tweet?url=google.com`,
-    ...snsImagePaths.x,
-  },
-  {
-    key: 'facebook',
-    shareLink: `https://www.facebook.com/share.php?u=google.com`,
-    ...snsImagePaths.facebook,
-  },
-] as const;
-
 const ResultTemplate = ({ result }: Props) => {
   const imagePaths = resultImagePaths[result];
   const resultTexts = resultText[result];
   const [isShow, setIsShow] = useState(false);
+  const [pageUrl, setPageUrl] = useState('');
 
+  useEffect(() => {
+    setPageUrl(window.location.href);
+  }, [pageUrl]);
+
+  const SNS_ITEM_LIST = [
+    {
+      key: 'line',
+      // https://social-plugins.line.me/lineit/share?url=google.com$text=任意のテキストを埋め込める
+      shareLink: `https://social-plugins.line.me/lineit/share?url=${pageUrl}`,
+      ...snsImagePaths.line,
+    },
+    {
+      key: 'insta',
+      shareLink: ``,
+      ...snsImagePaths.insta,
+    },
+    {
+      key: 'x',
+      // https://twitter.com/intent/tweet?url=google.com&text=ポストさせたい任意のテキストを埋め込める
+      shareLink: `https://twitter.com/intent/tweet?url=${pageUrl}`,
+      ...snsImagePaths.x,
+    },
+    {
+      key: 'facebook',
+      shareLink: `https://www.facebook.com/share.php?u=${pageUrl}`,
+      ...snsImagePaths.facebook,
+    },
+  ] as const;
   const copyToClipboard = () => {
     navigator.clipboard.writeText(window.location.href);
     setIsShow(true);
@@ -133,10 +136,28 @@ const ResultTemplate = ({ result }: Props) => {
         </div>
         <p className="mt-24 whitespace-pre-line text-center">{resultTexts.color}</p>
       </section>
-      {/* ② */}
+      <section className="mt-32">
+        <div className="px-48 text-left">
+          <TitleLabel
+            background={result}
+          >{`${RESULT_TEXT[result].prefix}の特徴`}</TitleLabel>
+        </div>
+        <Image
+          className="mx-auto mt-16 px-44"
+          src="/result/feature.png"
+          alt="あなたの特徴"
+          width={1450}
+          height={1030}
+        />
+        <div className="mt-16 whitespace-pre-line text-center">
+          {resultText[result].characteristics}
+        </div>
+        <div className="mx-44 mt-16">
+          <Table resultText={resultTexts.feature} result={result} kind="feature" />
+        </div>
+      </section>
       {/* ③ */}
       {/* ④ */}
-      <Table resultText={resultTexts.feature} result={result} kind="feature" />
 
       <section className="mt-32">
         <div className="px-48 text-left">
