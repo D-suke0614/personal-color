@@ -1,9 +1,8 @@
-import ResultTemplate from '@/components/ResultTemplate/ResultTemplate';
-
 export default function Home() {
   return (
     <>
-      <ResultTemplate result="spring" />
+      {/* チュートリアルページ作るので、いったんここでインポートしていた結果ページは消しておきます */}
+      Personal Color
     </>
   );
 }

@@ -136,10 +136,28 @@ const ResultTemplate = ({ result }: Props) => {
         </div>
         <p className="mt-24 whitespace-pre-line text-center">{resultTexts.color}</p>
       </section>
-      {/* ② */}
+      <section className="mt-32">
+        <div className="px-48 text-left">
+          <TitleLabel
+            background={result}
+          >{`${RESULT_TEXT[result].prefix}の特徴`}</TitleLabel>
+        </div>
+        <Image
+          className="mx-auto mt-16 px-44"
+          src="/result/feature.png"
+          alt="あなたの特徴"
+          width={1450}
+          height={1030}
+        />
+        <div className="mt-16 whitespace-pre-line text-center">
+          {resultText[result].characteristics}
+        </div>
+        <div className="mx-44 mt-16">
+          <Table resultText={resultTexts.feature} result={result} kind="feature" />
+        </div>
+      </section>
       {/* ③ */}
       {/* ④ */}
-      <Table resultText={resultTexts.feature} result={result} kind="feature" />
 
       <Table resultText={resultTexts.fashionColor} result={result} kind="fashionColor" />
 
