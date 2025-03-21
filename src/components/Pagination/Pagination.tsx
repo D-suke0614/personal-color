@@ -1,19 +1,17 @@
 'use client';
 
-// import { useRouter } from "next/navigation";
+import type { PageValue } from '@/types/pageValue';
+import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 
 type PaginationProps = {
-  currentPage: pageValue;
-  onPageChange: (page: pageValue) => void;
+  currentPage: PageValue;
+  onPageChange: (page: PageValue) => void;
   handleKeyDown: (event: KeyboardEvent) => void;
 };
 
-type pageValue = 1 | 2 | 3 | 4 | 5 | 6;
-
 const Pagination = ({ currentPage, onPageChange, handleKeyDown }: PaginationProps) => {
-  // TODO: /diagnoseページができた後にコメントインする
-  // const router = useRouter();
+  const router = useRouter();
 
   useEffect(() => {
     document.addEventListener('keydown', handleKeyDown);
@@ -31,7 +29,7 @@ const Pagination = ({ currentPage, onPageChange, handleKeyDown }: PaginationProp
             <button
               type="button"
               className={`inline-block h-[18px] w-[40px] cursor-pointer rounded-[10px] border-[3px] border-black ${currentPage === index + 1 ? 'bg-black' : ''}`}
-              onClick={() => onPageChange((index + 1) as pageValue)}
+              onClick={() => onPageChange((index + 1) as PageValue)}
             ></button>
           </li>
         ))}
@@ -40,11 +38,11 @@ const Pagination = ({ currentPage, onPageChange, handleKeyDown }: PaginationProp
         type="button"
         className="mx-1 flex h-[37px] w-[39px] items-center justify-center rounded-full bg-black text-white"
         onClick={() => {
-          if (currentPage === 6) {
+          if (currentPage === 5) {
             // TODO: /diagnoseページができた後にコメントインする
-            // router.push('/diagnose');
-          } else if (currentPage < 6) {
-            onPageChange((currentPage + 1) as pageValue);
+            router.push('/diagnose');
+          } else if (currentPage < 5) {
+            onPageChange((currentPage + 1) as PageValue);
           }
         }}
       >
