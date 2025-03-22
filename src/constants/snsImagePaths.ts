@@ -3,10 +3,6 @@ export const snsImagePaths = {
     src: '/result/line_logo.png',
     alt: 'line logo',
   },
-  insta: {
-    src: '/result/insta_logo.png',
-    alt: 'instagram logo',
-  },
   x: {
     src: '/result/x_logo.png',
     alt: 'x logo',
@@ -14,5 +10,9 @@ export const snsImagePaths = {
   facebook: {
     src: '/result/facebook_logo.png',
     alt: 'facebook logo',
+  },
+  share: {
+    src: '/result/share_logo.png',
+    alt: 'share logo',
   },
 } as const;
