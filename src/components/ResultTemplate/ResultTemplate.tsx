@@ -186,7 +186,7 @@ const ResultTemplate = ({ result }: Props) => {
         <div className="px-48 text-left">
           <TitleLabel
             background={result}
-          >{`${RESULT_TEXT[result].label}さんに似合わない色`}</TitleLabel>
+          >{`${RESULT_TEXT[result].prefix}さんに似合わない色`}</TitleLabel>
         </div>
         <Image
           className="mx-auto mt-16 px-44"
