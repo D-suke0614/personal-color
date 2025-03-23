@@ -15,10 +15,6 @@ const Tutorial = () => {
       ...snsImagePaths.line,
     },
     {
-      key: 'insta',
-      ...snsImagePaths.insta,
-    },
-    {
       key: 'x',
       ...snsImagePaths.x,
     },
