@@ -73,11 +73,6 @@ const ResultTemplate = ({ result }: Props) => {
       ...snsImagePaths.line,
     },
     {
-      key: 'insta',
-      shareLink: ``,
-      ...snsImagePaths.insta,
-    },
-    {
       key: 'x',
       // https://twitter.com/intent/tweet?url=google.com&text=ポストさせたい任意のテキストを埋め込める
       shareLink: `https://twitter.com/intent/tweet?url=${pageUrl}`,
@@ -88,13 +83,25 @@ const ResultTemplate = ({ result }: Props) => {
       shareLink: `https://www.facebook.com/share.php?u=${pageUrl}`,
       ...snsImagePaths.facebook,
     },
+    {
+      key: 'share',
+      shareLink: ``,
+      ...snsImagePaths.share,
+    },
   ] as const;
+
   const copyToClipboard = () => {
     navigator.clipboard.writeText(window.location.href);
     setIsShow(true);
     setTimeout(() => {
       setIsShow(false);
     }, 3000);
+  };
+
+  const shareUrl = async () => {
+    try {
+      await navigator.share({ url: pageUrl });
+    } catch (_) {}
   };
 
   return (
@@ -231,11 +238,11 @@ const ResultTemplate = ({ result }: Props) => {
         />
         <div className="mx-auto mt-16 flex w-3/5 justify-around">
           {SNS_ITEM_LIST.map(({ key, src, alt, shareLink }) =>
-            // インスタだけ共有用URLの作り方がわからなかったので、一旦画像だけ配置
-            // todo: 共有用URLが作成できれば修正、無理ならインスタは削除
-            key === 'insta' ? (
+            key === 'share' ? (
               <div key={key}>
-                <Image src={src} alt={alt} width={100} height={100} />
+                <button type="button" onClick={shareUrl}>
+                  <Image src={src} alt={alt} width={100} height={100} />
+                </button>
               </div>
             ) : (
               <Link key={key} href={shareLink} target="_blank" className="block">
