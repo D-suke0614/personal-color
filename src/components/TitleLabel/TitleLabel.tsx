@@ -5,7 +5,7 @@ import { COLOR_CODES } from '@/constants/colorCodes';
 import clsx from 'clsx';
 
 type Props = {
-  children: string;
+  children: React.ReactNode;
   background: 'spring' | 'summer' | 'autumn' | 'winter';
 };
 

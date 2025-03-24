@@ -2,15 +2,15 @@
 
 import { TABLE_COLOR_CODES } from '@/constants/colorCodes';
 
+type ResultText = {
+  id: number;
+  text: string;
+};
+
 type TableProps = {
   resultText: ResultText[];
   result: 'spring' | 'summer' | 'autumn' | 'winter';
   kind: 'feature' | 'fashionColor';
-};
-
-type ResultText = {
-  id: number;
-  text: string;
 };
 
 const FEATURE_LABEL = ['肌', '髪', '目'] as const;

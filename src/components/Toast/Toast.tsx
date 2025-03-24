@@ -3,11 +3,11 @@
 import clsx from 'clsx';
 
 type Props = {
-  message: string;
+  children: React.ReactNode;
   isShow: boolean;
 };
 
-const Toast = ({ message, isShow }: Props) => {
+const Toast = ({ children, isShow }: Props) => {
   return (
     <div
       className={clsx(
@@ -15,7 +15,7 @@ const Toast = ({ message, isShow }: Props) => {
         `${isShow ? 'block' : 'hidden'}`,
       )}
     >
-      {message}
+      {children}
     </div>
   );
 };

@@ -16,7 +16,7 @@ type Story = StoryObj<typeof meta>;
 
 export const Copied: Story = {
   args: {
-    message: 'Copied!',
     isShow: true,
+    children: 'コピーしました！',
   },
 };

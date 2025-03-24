@@ -1,8 +1,11 @@
 import Link from 'next/link';
+import type { UrlObject } from 'url';
+
+type Url = string | UrlObject;
 
 type Props = {
-  children: string;
-  href: string;
+  children: React.ReactNode;
+  href: Url;
   target: '_blank' | '_self' | '_top' | '_parent';
 };
 

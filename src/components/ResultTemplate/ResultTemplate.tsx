@@ -261,7 +261,7 @@ const ResultTemplate = ({ result }: Props) => {
         </div>
       </section>
       <div className="mx-[500px] mt-9 text-center">
-        <Toast message="コピーしました" isShow={isShow} />
+        <Toast isShow={isShow}>コピーしました！</Toast>
       </div>
     </div>
   );
