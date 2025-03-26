@@ -1,7 +1,7 @@
 'use client';
 
 type ButtonProps<T> = {
-  children: string;
+  children: React.ReactNode;
   onClick?: () => T;
   disabled?: boolean;
   type?: 'button' | 'submit' | 'reset';

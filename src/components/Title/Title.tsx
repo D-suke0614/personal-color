@@ -1,8 +1,10 @@
 'use client';
 
+import clsx from 'clsx';
+
 type TitleProps<T extends 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' = 'h1'> = {
   as?: T;
-  children: string;
+  children: React.ReactNode;
   isFontKnewave?: boolean;
   isFontBold?: boolean;
 };
@@ -28,7 +30,9 @@ const Title = <T extends 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6'>({
   const weightClass = isFontBold ? 'font-bold' : '';
 
   return (
-    <Tag className={`${fontClass} ${weightClass} text-center ${fontSizeMap[Tag]}`}>
+    <Tag
+      className={clsx('text-center', `${fontClass} ${weightClass} ${fontSizeMap[Tag]}`)}
+    >
       {children}
     </Tag>
   );

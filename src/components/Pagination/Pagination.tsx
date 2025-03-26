@@ -15,11 +15,18 @@ const Pagination = ({ currentPage, onPageChange, handleKeyDown }: PaginationProp
 
   useEffect(() => {
     document.addEventListener('keydown', handleKeyDown);
-
     return () => {
       document.removeEventListener('keydown', handleKeyDown);
     };
   }, [handleKeyDown]);
+
+  const onClickNextButton = () => {
+    if (currentPage === 5) {
+      router.push('/diagnose');
+    } else if (currentPage < 5) {
+      onPageChange((currentPage + 1) as PageValue);
+    }
+  };
 
   return (
     <div className="flex justify-center">
@@ -37,14 +44,7 @@ const Pagination = ({ currentPage, onPageChange, handleKeyDown }: PaginationProp
       <button
         type="button"
         className="mx-1 flex h-[37px] w-[39px] items-center justify-center rounded-full bg-black text-white"
-        onClick={() => {
-          if (currentPage === 5) {
-            // TODO: /diagnoseページができた後にコメントインする
-            router.push('/diagnose');
-          } else if (currentPage < 5) {
-            onPageChange((currentPage + 1) as PageValue);
-          }
-        }}
+        onClick={onClickNextButton}
       >
         ＞
       </button>
