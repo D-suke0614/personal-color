@@ -23,7 +23,7 @@ export default function Home() {
         height={750}
       />
       <div className="w-fit">
-        <TextLink target="_blank" href="/tutorial">
+        <TextLink target="_self" href="/tutorial">
           診断START
         </TextLink>
       </div>
