@@ -15,4 +15,3 @@ tsconfig.json
 src/env.d.ts
 *.cjs
 *.mjs
-src/app/diagnose/page.tsx
