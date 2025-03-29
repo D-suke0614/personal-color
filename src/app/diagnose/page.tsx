@@ -16,76 +16,60 @@ export default function Page() {
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    // Set canvas dimensions to match video
+    // canvasにカメラで撮った画像を描画
     canvas.width = video.videoWidth;
     canvas.height = video.videoHeight;
-
-    // Draw the current video frame onto the canvas
     ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
 
-    // Analyze the image using face-api.js
-    const detections = await faceapi
+    const detections = await analyzeFace(video);
+    getFaceColorCodeData(detections, ctx);
+  };
+
+  const analyzeFace = async (video: HTMLVideoElement) => {
+    return await faceapi
       .detectAllFaces(video, new faceapi.TinyFaceDetectorOptions())
       .withFaceLandmarks()
       .withFaceDescriptors()
       .withAgeAndGender();
+  };
 
-    if (detections.length === 0) {
-      alert('No faces detected.');
-      return;
-    }
+  const getFaceColorCodeData = (detections: any[], ctx: CanvasRenderingContext2D) => {
+    const result = detections.map((detection) => ({
+      hairBrightColorCode: getHairBrightColorCode(detection, ctx),
+      hairDarkColorCode: getHairDarkColorCode(detection, ctx),
+      skinBrightColorCode: getSkinBrightColorCode(detection, ctx),
+      skinDarkColorCode: getSkinDarkColorCode(detection, ctx),
+      eyeColorCode: getEyeColorCode(detection, ctx),
+    }));
 
-    // Clear the canvas and draw the detections
-    // ctx.clearRect(0, 0, canvas.width, canvas.height);
-    faceapi.draw.drawDetections(canvas, detections);
-    faceapi.draw.drawFaceLandmarks(canvas, detections);
-
-    const result = detections.map((detection) => {
-      const hairBrightColorCode = getHairBrightColorCode(detection, ctx);
-      const hairDarkColorCode = getHairDarkColorCode(detection, ctx);
-      const skinBrightColorCode = getSkinBrightColorCode(detection, ctx);
-      const skinDarkColorCode = getSkinDarkColorCode(detection, ctx);
-      const eyeColorCode = getEyeColorCode(detection, ctx);
-
-      // カラーコードをここで配列にして返す
-      return {
-        hairBrightColorCode,
-        hairDarkColorCode,
-        skinBrightColorCode,
-        skinDarkColorCode,
-        eyeColorCode,
-      };
-    });
     console.log(result);
   };
 
   const calculateAverageColor = (data: Uint8ClampedArray) => {
-    let r = 0,
-      g = 0,
-      b = 0;
+    const color = { red: 0, green: 0, blue: 0 };
     let count = 0;
 
     for (let i = 0; i < data.length; i += 4) {
       const alpha = data[i + 3];
       if (alpha > 0) {
-        r += data[i];
-        g += data[i + 1];
-        b += data[i + 2];
+        color.red += data[i];
+        color.green += data[i + 1];
+        color.blue += data[i + 2];
         count++;
       }
     }
 
     return {
-      r: Math.round(r / count),
-      g: Math.round(g / count),
-      b: Math.round(b / count),
+      r: Math.round(color.red / count),
+      g: Math.round(color.green / count),
+      b: Math.round(color.blue / count),
     };
   };
 
-  function rgbToHex(r: number, g: number, b: number) {
+  const rgbToHex = (r: number, g: number, b: number) => {
     const toHex = (value: number) => value.toString(16).padStart(2, '0');
     return `#${toHex(r)}${toHex(g)}${toHex(b)}`;
-  }
+  };
 
   // 髪の明るい色
   const getHairBrightColorCode = (detection: any, ctx: any) => {
@@ -120,13 +104,14 @@ export default function Page() {
     const jawOutLinePoints = detection.landmarks.getJawOutline();
     const jawOutLineTip = jawOutLinePoints[0];
     const hairDarkBoxSize = 5;
+    const OFFSET_X = 3;
     const startHairDarkStartX = Math.max(
       0,
-      Math.round(jawOutLineTip.x + 3 - hairDarkBoxSize / 2),
+      Math.round(jawOutLineTip.x + OFFSET_X - hairDarkBoxSize / 2),
     );
     const startHairDarkStartY = Math.max(
       0,
-      Math.round(jawOutLineTip.y - 3 - hairDarkBoxSize / 2),
+      Math.round(jawOutLineTip.y - OFFSET_X - hairDarkBoxSize / 2),
     );
     const hairDarkData = ctx.getImageData(
       startHairDarkStartX,
@@ -150,17 +135,9 @@ export default function Page() {
     const jawOutLinePoints = detection.landmarks.getJawOutline();
     const jawOutLineTip = jawOutLinePoints[2];
 
-    // ctx.font = '5px Arial';
-    // ctx.fillStyle = 'blue';
-    // ctx.fillText('★', jawOutLineTip.x, jawOutLineTip.y);
-
     // 鼻の点
     const nosePoints = detection.landmarks.getNose();
     const noseTip = nosePoints[4];
-
-    // ctx.font = '5px Arial';
-    // ctx.fillStyle = 'green';
-    // ctx.fillText('★', noseTip.x, noseTip.y);
 
     const skinBrightBoxSize = 15;
     const startSkinBrightStartX = (jawOutLineTip.x + noseTip.x) / 2;
@@ -188,9 +165,10 @@ export default function Page() {
     const noseTip = nosePoints[5];
 
     const skinDarkBoxSize = 5;
+    const OFFSET_X = 23;
     const startSkinDarkStartX = Math.max(
       0,
-      Math.round(noseTip.x - 23 - skinDarkBoxSize / 2),
+      Math.round(noseTip.x - OFFSET_X - skinDarkBoxSize / 2),
     );
     const startSkinDarkStartY = Math.max(0, Math.round(noseTip.y - skinDarkBoxSize / 2));
 
@@ -266,21 +244,17 @@ export default function Page() {
       if (!videoRef.current) return;
 
       const video = videoRef.current;
-      const detections = await faceapi
-        .detectAllFaces(video, new faceapi.TinyFaceDetectorOptions())
-        .withFaceLandmarks()
-        .withFaceDescriptors()
-        .withAgeAndGender();
+      const detections = await analyzeFace(video);
 
       // カメラに一人の顔が映った時にカラーコードを取得するようにする
       if (detections.length === 1) {
-        console.log('顔認証');
+        console.log('1 顔認証開始');
         handleCaptureAndAnalyze();
 
         if (intervalRef.current) {
           clearInterval(intervalRef.current);
           intervalRef.current = null;
-          console.log('顔認識成功 → setInterval停止');
+          console.log('2 顔認識成功 → setInterval停止');
         }
       } else {
         alert('カメラに顔を映してください（複数人NG）');
