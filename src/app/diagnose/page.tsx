@@ -6,6 +6,7 @@ import { useEffect, useRef } from 'react';
 export default function Page() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
   const handleCaptureAndAnalyze = async () => {
     if (!videoRef.current || !canvasRef.current) return;
@@ -243,7 +244,6 @@ export default function Page() {
           faceapi.nets.faceRecognitionNet.loadFromUri(MODEL_URL),
           faceapi.nets.ageGenderNet.loadFromUri(MODEL_URL),
         ]);
-        // console.log('Models loaded successfully');
       } catch (error) {
         console.error('Error loading models:', error);
       }
@@ -262,7 +262,40 @@ export default function Page() {
         .catch((err) => console.error('Error starting video:', err));
     };
 
+    const checkFaceAndAnalyze = async () => {
+      if (!videoRef.current) return;
+
+      const video = videoRef.current;
+      const detections = await faceapi
+        .detectAllFaces(video, new faceapi.TinyFaceDetectorOptions())
+        .withFaceLandmarks()
+        .withFaceDescriptors()
+        .withAgeAndGender();
+
+      // カメラに一人の顔が映った時にカラーコードを取得するようにする
+      if (detections.length === 1) {
+        console.log('顔認証');
+        handleCaptureAndAnalyze();
+
+        if (intervalRef.current) {
+          clearInterval(intervalRef.current);
+          intervalRef.current = null;
+          console.log('顔認識成功 → setInterval停止');
+        }
+      } else {
+        alert('カメラに顔を映してください（複数人NG）');
+      }
+    };
+
     loadModels();
+
+    intervalRef.current = setInterval(checkFaceAndAnalyze, 3000);
+
+    return () => {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+      }
+    };
   }, []);
 
   return (
