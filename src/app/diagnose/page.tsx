@@ -1,7 +1,7 @@
 'use client';
 
 import * as faceapi from 'face-api.js';
-import { useEffect, useRef } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 
 export default function Page() {
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -9,7 +9,19 @@ export default function Page() {
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const BOX_SIZE = 5;
 
-  const handleCaptureAndAnalyze = async () => {
+  const getFaceColorCodeData = (detections: any[], ctx: CanvasRenderingContext2D) => {
+    const result = detections.map((detection) => ({
+      hairBrightColorCode: getHairBrightColorCode(detection, ctx),
+      hairDarkColorCode: getHairDarkColorCode(detection, ctx),
+      skinBrightColorCode: getSkinBrightColorCode(detection, ctx),
+      skinDarkColorCode: getSkinDarkColorCode(detection, ctx),
+      eyeColorCode: getEyeColorCode(detection, ctx),
+    }));
+
+    console.log(result[0]);
+  };
+
+  const handleCaptureAndAnalyze = useCallback(async () => {
     if (!videoRef.current || !canvasRef.current) return;
 
     const video = videoRef.current;
@@ -24,7 +36,7 @@ export default function Page() {
 
     const detections = await analyzeFace(video);
     getFaceColorCodeData(detections, ctx);
-  };
+  }, [getFaceColorCodeData]);
 
   const analyzeFace = async (video: HTMLVideoElement) => {
     return await faceapi
@@ -32,18 +44,6 @@ export default function Page() {
       .withFaceLandmarks()
       .withFaceDescriptors()
       .withAgeAndGender();
-  };
-
-  const getFaceColorCodeData = (detections: any[], ctx: CanvasRenderingContext2D) => {
-    const result = detections.map((detection) => ({
-      hairBrightColorCode: getHairBrightColorCode(detection, ctx),
-      hairDarkColorCode: getHairDarkColorCode(detection, ctx),
-      skinBrightColorCode: getSkinBrightColorCode(detection, ctx),
-      skinDarkColorCode: getSkinDarkColorCode(detection, ctx),
-      eyeColorCode: getEyeColorCode(detection, ctx),
-    }));
-
-    console.log(result[0]);
   };
 
   const calculateAverageColor = (ctx: any, startX: number, startY: number) => {
@@ -207,7 +207,7 @@ export default function Page() {
 
   return (
     <div>
-      <video ref={videoRef} autoPlay muted className="w-screen h-screen object-cover" />
+      <video ref={videoRef} autoPlay muted className="h-screen w-screen object-cover" />
       <canvas ref={canvasRef} className="hidden" />
     </div>
   );
