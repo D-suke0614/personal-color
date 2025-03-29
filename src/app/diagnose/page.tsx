@@ -14,9 +14,8 @@ export default function Page() {
     return `#${toHex(r)}${toHex(g)}${toHex(b)}`;
   }, []);
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const calculateAverageColor = useCallback(
-    (ctx: any, startX: number, startY: number) => {
+    (ctx: CanvasRenderingContext2D, startX: number, startY: number) => {
       const color = { red: 0, green: 0, blue: 0 };
       let count = 0;
       const data = ctx.getImageData(startX, startY, BOX_SIZE, BOX_SIZE).data;
@@ -43,7 +42,7 @@ export default function Page() {
   // 髪の明るい色
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const getHairBrightColorCode = useCallback(
-    (detection: any, ctx: any) => {
+    (detection: any, ctx: CanvasRenderingContext2D) => {
       const jawOutLinePoints = detection.landmarks.getJawOutline();
       const startX = jawOutLinePoints[8]._x;
       const startY =
@@ -59,7 +58,7 @@ export default function Page() {
   // 髪の暗い色
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const getHairDarkColorCode = useCallback(
-    (detection: any, ctx: any) => {
+    (detection: any, ctx: CanvasRenderingContext2D) => {
       const jawOutLineTip = detection.landmarks.getJawOutline()[0];
       const OFFSET_X = 3;
       const startX = Math.max(0, Math.round(jawOutLineTip.x + OFFSET_X - BOX_SIZE / 2));
@@ -75,7 +74,7 @@ export default function Page() {
   // 肌の明るい色
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const getSkinBrightColorCode = useCallback(
-    (detection: any, ctx: any) => {
+    (detection: any, ctx: CanvasRenderingContext2D) => {
       const jawOutLinePoints = detection.landmarks.getJawOutline();
       const nosePoints = detection.landmarks.getNose();
       const startX = (jawOutLinePoints[2].x + nosePoints[4].x) / 2;
@@ -91,7 +90,7 @@ export default function Page() {
   // 肌の暗い色
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const getSkinDarkColorCode = useCallback(
-    (detection: any, ctx: any) => {
+    (detection: any, ctx: CanvasRenderingContext2D) => {
       const nosePoints = detection.landmarks.getNose();
       const OFFSET_X = 23;
       const startX = Math.max(0, Math.round(nosePoints[5].x - OFFSET_X - BOX_SIZE / 2));
@@ -107,7 +106,7 @@ export default function Page() {
   // 瞳の色
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const getEyeColorCode = useCallback(
-    (detection: any, ctx: any) => {
+    (detection: any, ctx: CanvasRenderingContext2D) => {
       const nosePoints = detection.landmarks.getLeftEye();
       const midX = (nosePoints[1]._x + nosePoints[4]._x) / 2;
       const midY = (nosePoints[1]._y + nosePoints[4]._y) / 2;
