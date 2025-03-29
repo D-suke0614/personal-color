@@ -11,7 +11,7 @@ import { snsImagePaths } from '@/constants/snsImagePaths';
 import clsx from 'clsx';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 type Props = {
   result: 'spring' | 'summer' | 'autumn' | 'winter';
@@ -55,36 +55,40 @@ const BG_COLOR = {
   winter: '#BCD3DF',
 } as const;
 
-// todo: シェアリンクのgoogle.com部分を結果ページのリンクに置き換える
-const SNS_ITEM_LIST = [
-  {
-    key: 'line',
-    // https://social-plugins.line.me/lineit/share?url=google.com$text=任意のテキストを埋め込める
-    shareLink: `https://social-plugins.line.me/lineit/share?url=google.com`,
-    ...snsImagePaths.line,
-  },
-  {
-    key: 'insta',
-    shareLink: ``,
-    ...snsImagePaths.insta,
-  },
-  {
-    key: 'x',
-    // https://twitter.com/intent/tweet?url=google.com&text=ポストさせたい任意のテキストを埋め込める
-    shareLink: `https://twitter.com/intent/tweet?url=google.com`,
-    ...snsImagePaths.x,
-  },
-  {
-    key: 'facebook',
-    shareLink: `https://www.facebook.com/share.php?u=google.com`,
-    ...snsImagePaths.facebook,
-  },
-] as const;
-
 const ResultTemplate = ({ result }: Props) => {
   const imagePaths = resultImagePaths[result];
   const resultTexts = resultText[result];
   const [isShow, setIsShow] = useState(false);
+  const [pageUrl, setPageUrl] = useState('');
+
+  useEffect(() => {
+    setPageUrl(window.location.href);
+  }, [pageUrl]);
+
+  const SNS_ITEM_LIST = [
+    {
+      key: 'line',
+      // https://social-plugins.line.me/lineit/share?url=google.com$text=任意のテキストを埋め込める
+      shareLink: `https://social-plugins.line.me/lineit/share?url=${pageUrl}`,
+      ...snsImagePaths.line,
+    },
+    {
+      key: 'x',
+      // https://twitter.com/intent/tweet?url=google.com&text=ポストさせたい任意のテキストを埋め込める
+      shareLink: `https://twitter.com/intent/tweet?url=${pageUrl}`,
+      ...snsImagePaths.x,
+    },
+    {
+      key: 'facebook',
+      shareLink: `https://www.facebook.com/share.php?u=${pageUrl}`,
+      ...snsImagePaths.facebook,
+    },
+    {
+      key: 'share',
+      shareLink: ``,
+      ...snsImagePaths.share,
+    },
+  ] as const;
 
   const copyToClipboard = () => {
     navigator.clipboard.writeText(window.location.href);
@@ -92,6 +96,12 @@ const ResultTemplate = ({ result }: Props) => {
     setTimeout(() => {
       setIsShow(false);
     }, 3000);
+  };
+
+  const shareUrl = async () => {
+    try {
+      await navigator.share({ url: pageUrl });
+    } catch (_) {}
   };
 
   return (
@@ -133,18 +143,57 @@ const ResultTemplate = ({ result }: Props) => {
         </div>
         <p className="mt-24 whitespace-pre-line text-center">{resultTexts.color}</p>
       </section>
-      {/* ② */}
+      <section className="mt-32">
+        <div className="px-48 text-left">
+          <TitleLabel
+            background={result}
+          >{`${RESULT_TEXT[result].prefix}の特徴`}</TitleLabel>
+        </div>
+        <Image
+          className="mx-auto mt-16 px-44"
+          src="/result/feature.png"
+          alt="あなたの特徴"
+          width={1450}
+          height={1030}
+        />
+        <div className="mt-16 whitespace-pre-line text-center">
+          {resultText[result].characteristics}
+        </div>
+        <div className="mx-44 mt-16">
+          <Table resultText={resultTexts.feature} result={result} kind="feature" />
+        </div>
+      </section>
       {/* ③ */}
       {/* ④ */}
-      <Table resultText={resultTexts.feature} result={result} kind="feature" />
 
-      <Table resultText={resultTexts.fashionColor} result={result} kind="fashionColor" />
+      <section className="mt-32">
+        <div className="px-48 text-left">
+          <TitleLabel background={result}>あなたのファッション</TitleLabel>
+        </div>
+        <Image
+          className="mx-auto mt-16 px-44"
+          src={imagePaths.fashion.src}
+          alt={imagePaths.fashion.alt}
+          width={722}
+          height={794}
+        />
+        <p className="mx-auto mt-16 w-1/2 whitespace-pre-line text-center">
+          {resultTexts.fashion}
+        </p>
+        <div className="mx-44 mt-16">
+          <Table
+            resultText={resultTexts.fashionColor}
+            result={result}
+            kind="fashionColor"
+          />
+        </div>
+      </section>
 
       <section className="mt-32">
         <div className="px-48 text-left">
           <TitleLabel
             background={result}
-          >{`${RESULT_TEXT[result].label}さんに似合わない色`}</TitleLabel>
+          >{`${RESULT_TEXT[result].prefix}さんに似合わない色`}</TitleLabel>
         </div>
         <Image
           className="mx-auto mt-16 px-44"
@@ -189,11 +238,11 @@ const ResultTemplate = ({ result }: Props) => {
         />
         <div className="mx-auto mt-16 flex w-3/5 justify-around">
           {SNS_ITEM_LIST.map(({ key, src, alt, shareLink }) =>
-            // インスタだけ共有用URLの作り方がわからなかったので、一旦画像だけ配置
-            // todo: 共有用URLが作成できれば修正、無理ならインスタは削除
-            key === 'insta' ? (
+            key === 'share' ? (
               <div key={key}>
-                <Image src={src} alt={alt} width={100} height={100} />
+                <button type="button" onClick={shareUrl}>
+                  <Image src={src} alt={alt} width={100} height={100} />
+                </button>
               </div>
             ) : (
               <Link key={key} href={shareLink} target="_blank" className="block">
@@ -212,7 +261,7 @@ const ResultTemplate = ({ result }: Props) => {
         </div>
       </section>
       <div className="mx-[500px] mt-9 text-center">
-        <Toast message="コピーしました" isShow={isShow} />
+        <Toast isShow={isShow}>コピーしました！</Toast>
       </div>
     </div>
   );
