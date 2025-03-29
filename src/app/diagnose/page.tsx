@@ -9,17 +9,139 @@ export default function Page() {
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const BOX_SIZE = 5;
 
-  const getFaceColorCodeData = (detections: any[], ctx: CanvasRenderingContext2D) => {
-    const result = detections.map((detection) => ({
-      hairBrightColorCode: getHairBrightColorCode(detection, ctx),
-      hairDarkColorCode: getHairDarkColorCode(detection, ctx),
-      skinBrightColorCode: getSkinBrightColorCode(detection, ctx),
-      skinDarkColorCode: getSkinDarkColorCode(detection, ctx),
-      eyeColorCode: getEyeColorCode(detection, ctx),
-    }));
+  const rgbToHex = useCallback((r: number, g: number, b: number) => {
+    const toHex = (value: number) => value.toString(16).padStart(2, '0');
+    return `#${toHex(r)}${toHex(g)}${toHex(b)}`;
+  }, []);
 
-    console.log(result[0]);
-  };
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const calculateAverageColor = useCallback(
+    (ctx: any, startX: number, startY: number) => {
+      const color = { red: 0, green: 0, blue: 0 };
+      let count = 0;
+      const data = ctx.getImageData(startX, startY, BOX_SIZE, BOX_SIZE).data;
+
+      for (let i = 0; i < data.length; i += 4) {
+        const alpha = data[i + 3];
+        if (alpha > 0) {
+          color.red += data[i];
+          color.green += data[i + 1];
+          color.blue += data[i + 2];
+          count++;
+        }
+      }
+
+      return rgbToHex(
+        Math.round(color.red / count),
+        Math.round(color.green / count),
+        Math.round(color.blue / count),
+      );
+    },
+    [rgbToHex],
+  );
+
+  // 髪の明るい色
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const getHairBrightColorCode = useCallback(
+    (detection: any, ctx: any) => {
+      const jawOutLinePoints = detection.landmarks.getJawOutline();
+      const startX = jawOutLinePoints[8]._x;
+      const startY =
+        jawOutLinePoints[0]._y - (jawOutLinePoints[4]._y - jawOutLinePoints[0]._y);
+
+      drawStar(ctx, startX, startY, 'pink');
+
+      return calculateAverageColor(ctx, startX, startY);
+    },
+    [calculateAverageColor],
+  );
+
+  // 髪の暗い色
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const getHairDarkColorCode = useCallback(
+    (detection: any, ctx: any) => {
+      const jawOutLineTip = detection.landmarks.getJawOutline()[0];
+      const OFFSET_X = 3;
+      const startX = Math.max(0, Math.round(jawOutLineTip.x + OFFSET_X - BOX_SIZE / 2));
+      const startY = Math.max(0, Math.round(jawOutLineTip.y - OFFSET_X - BOX_SIZE / 2));
+
+      drawStar(ctx, startX, startY, 'green');
+
+      return calculateAverageColor(ctx, startX, startY);
+    },
+    [calculateAverageColor],
+  );
+
+  // 肌の明るい色
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const getSkinBrightColorCode = useCallback(
+    (detection: any, ctx: any) => {
+      const jawOutLinePoints = detection.landmarks.getJawOutline();
+      const nosePoints = detection.landmarks.getNose();
+      const startX = (jawOutLinePoints[2].x + nosePoints[4].x) / 2;
+      const startY = (jawOutLinePoints[2].y + nosePoints[4].y) / 2;
+
+      drawStar(ctx, startX, startY, 'red');
+
+      return calculateAverageColor(ctx, startX, startY);
+    },
+    [calculateAverageColor],
+  );
+
+  // 肌の暗い色
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const getSkinDarkColorCode = useCallback(
+    (detection: any, ctx: any) => {
+      const nosePoints = detection.landmarks.getNose();
+      const OFFSET_X = 23;
+      const startX = Math.max(0, Math.round(nosePoints[5].x - OFFSET_X - BOX_SIZE / 2));
+      const startY = Math.max(0, Math.round(nosePoints[5].y - BOX_SIZE / 2));
+
+      drawStar(ctx, startX, startY, 'purple');
+
+      return calculateAverageColor(ctx, startX, startY);
+    },
+    [calculateAverageColor],
+  );
+
+  // 瞳の色
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const getEyeColorCode = useCallback(
+    (detection: any, ctx: any) => {
+      const nosePoints = detection.landmarks.getLeftEye();
+      const midX = (nosePoints[1]._x + nosePoints[4]._x) / 2;
+      const midY = (nosePoints[1]._y + nosePoints[4]._y) / 2;
+      const startX = Math.max(0, Math.round(midX - BOX_SIZE / 2));
+      const startY = Math.max(0, Math.round(midY - BOX_SIZE / 2));
+
+      drawStar(ctx, startX, startY, 'yellow');
+
+      return calculateAverageColor(ctx, startX, startY);
+    },
+    [calculateAverageColor],
+  );
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const getFaceColorCodeData = useCallback(
+    (detections: any[], ctx: CanvasRenderingContext2D) => {
+      const result = detections.map((detection) => ({
+        hairBrightColorCode: getHairBrightColorCode(detection, ctx),
+        hairDarkColorCode: getHairDarkColorCode(detection, ctx),
+        skinBrightColorCode: getSkinBrightColorCode(detection, ctx),
+        skinDarkColorCode: getSkinDarkColorCode(detection, ctx),
+        eyeColorCode: getEyeColorCode(detection, ctx),
+      }));
+
+      console.log(result[0]);
+    },
+    [
+      getEyeColorCode,
+      getHairBrightColorCode,
+      getHairDarkColorCode,
+      getSkinBrightColorCode,
+      getSkinDarkColorCode,
+    ],
+  );
 
   const handleCaptureAndAnalyze = useCallback(async () => {
     if (!videoRef.current || !canvasRef.current) return;
@@ -44,94 +166,6 @@ export default function Page() {
       .withFaceLandmarks()
       .withFaceDescriptors()
       .withAgeAndGender();
-  };
-
-  const calculateAverageColor = (ctx: any, startX: number, startY: number) => {
-    const color = { red: 0, green: 0, blue: 0 };
-    let count = 0;
-    const data = ctx.getImageData(startX, startY, BOX_SIZE, BOX_SIZE).data;
-
-    for (let i = 0; i < data.length; i += 4) {
-      const alpha = data[i + 3];
-      if (alpha > 0) {
-        color.red += data[i];
-        color.green += data[i + 1];
-        color.blue += data[i + 2];
-        count++;
-      }
-    }
-
-    return rgbToHex(
-      Math.round(color.red / count),
-      Math.round(color.green / count),
-      Math.round(color.blue / count),
-    );
-  };
-
-  const rgbToHex = (r: number, g: number, b: number) => {
-    const toHex = (value: number) => value.toString(16).padStart(2, '0');
-    return `#${toHex(r)}${toHex(g)}${toHex(b)}`;
-  };
-
-  // 髪の明るい色
-  const getHairBrightColorCode = (detection: any, ctx: any) => {
-    const jawOutLinePoints = detection.landmarks.getJawOutline();
-    const startX = jawOutLinePoints[8]._x;
-    const startY =
-      jawOutLinePoints[0]._y - (jawOutLinePoints[4]._y - jawOutLinePoints[0]._y);
-
-    drawStar(ctx, startX, startY, 'pink');
-
-    return calculateAverageColor(ctx, startX, startY);
-  };
-
-  // 髪の暗い色
-  const getHairDarkColorCode = (detection: any, ctx: any) => {
-    const jawOutLineTip = detection.landmarks.getJawOutline()[0];
-    const OFFSET_X = 3;
-    const startX = Math.max(0, Math.round(jawOutLineTip.x + OFFSET_X - BOX_SIZE / 2));
-    const startY = Math.max(0, Math.round(jawOutLineTip.y - OFFSET_X - BOX_SIZE / 2));
-
-    drawStar(ctx, startX, startY, 'green');
-
-    return calculateAverageColor(ctx, startX, startY);
-  };
-
-  // 肌の明るい色
-  const getSkinBrightColorCode = (detection: any, ctx: any) => {
-    const jawOutLinePoints = detection.landmarks.getJawOutline();
-    const nosePoints = detection.landmarks.getNose();
-    const startX = (jawOutLinePoints[2].x + nosePoints[4].x) / 2;
-    const startY = (jawOutLinePoints[2].y + nosePoints[4].y) / 2;
-
-    drawStar(ctx, startX, startY, 'red');
-
-    return calculateAverageColor(ctx, startX, startY);
-  };
-
-  // 肌の暗い色
-  const getSkinDarkColorCode = (detection: any, ctx: any) => {
-    const nosePoints = detection.landmarks.getNose();
-    const OFFSET_X = 23;
-    const startX = Math.max(0, Math.round(nosePoints[5].x - OFFSET_X - BOX_SIZE / 2));
-    const startY = Math.max(0, Math.round(nosePoints[5].y - BOX_SIZE / 2));
-
-    drawStar(ctx, startX, startY, 'purple');
-
-    return calculateAverageColor(ctx, startX, startY);
-  };
-
-  // 瞳の色
-  const getEyeColorCode = (detection: any, ctx: any) => {
-    const nosePoints = detection.landmarks.getLeftEye();
-    const midX = (nosePoints[1]._x + nosePoints[4]._x) / 2;
-    const midY = (nosePoints[1]._y + nosePoints[4]._y) / 2;
-    const startX = Math.max(0, Math.round(midX - BOX_SIZE / 2));
-    const startY = Math.max(0, Math.round(midY - BOX_SIZE / 2));
-
-    drawStar(ctx, startX, startY, 'yellow');
-
-    return calculateAverageColor(ctx, startX, startY);
   };
 
   const drawStar = (
@@ -203,7 +237,7 @@ export default function Page() {
         clearInterval(intervalRef.current);
       }
     };
-  }, []);
+  }, [handleCaptureAndAnalyze]);
 
   return (
     <div>
