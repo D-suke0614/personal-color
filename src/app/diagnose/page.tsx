@@ -300,7 +300,6 @@ export default function Page() {
 
   return (
     <div>
-      <button onClick={handleCaptureAndAnalyze}>Capture and Analyze</button>
       <video ref={videoRef} autoPlay muted className="w-screen h-screen object-cover" />
       <canvas ref={canvasRef} className="hidden" />
     </div>
