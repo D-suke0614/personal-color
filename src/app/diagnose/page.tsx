@@ -267,10 +267,9 @@ export default function Page() {
 
   return (
     <div>
-      <h1>Diagnose</h1>
       <button onClick={handleCaptureAndAnalyze}>Capture and Analyze</button>
-      <video ref={videoRef} autoPlay muted width="640" height="480" />
-      <canvas ref={canvasRef} style={{ display: 'block' }} />
+      <video ref={videoRef} autoPlay muted className="w-screen h-screen object-cover" />
+      <canvas ref={canvasRef} className="hidden" />
     </div>
   );
 }
