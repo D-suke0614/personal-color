@@ -40,13 +40,18 @@ export default function Page() {
   );
 
   // 髪の明るい色
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const getHairBrightColorCode = useCallback(
-    (detection: any, ctx: CanvasRenderingContext2D) => {
+    (
+      detection: faceapi.WithFaceLandmarks<
+        { detection: faceapi.FaceDetection },
+        faceapi.FaceLandmarks68
+      >,
+      ctx: CanvasRenderingContext2D,
+    ) => {
       const jawOutLinePoints = detection.landmarks.getJawOutline();
-      const startX = jawOutLinePoints[8]._x;
+      const startX = jawOutLinePoints[8].x;
       const startY =
-        jawOutLinePoints[0]._y - (jawOutLinePoints[4]._y - jawOutLinePoints[0]._y);
+        jawOutLinePoints[0].y - (jawOutLinePoints[4].y - jawOutLinePoints[0].y);
 
       drawStar(ctx, startX, startY, 'pink');
 
@@ -56,9 +61,14 @@ export default function Page() {
   );
 
   // 髪の暗い色
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const getHairDarkColorCode = useCallback(
-    (detection: any, ctx: CanvasRenderingContext2D) => {
+    (
+      detection: faceapi.WithFaceLandmarks<
+        { detection: faceapi.FaceDetection },
+        faceapi.FaceLandmarks68
+      >,
+      ctx: CanvasRenderingContext2D,
+    ) => {
       const jawOutLineTip = detection.landmarks.getJawOutline()[0];
       const OFFSET_X = 3;
       const startX = Math.max(0, Math.round(jawOutLineTip.x + OFFSET_X - BOX_SIZE / 2));
@@ -72,9 +82,14 @@ export default function Page() {
   );
 
   // 肌の明るい色
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const getSkinBrightColorCode = useCallback(
-    (detection: any, ctx: CanvasRenderingContext2D) => {
+    (
+      detection: faceapi.WithFaceLandmarks<
+        { detection: faceapi.FaceDetection },
+        faceapi.FaceLandmarks68
+      >,
+      ctx: CanvasRenderingContext2D,
+    ) => {
       const jawOutLinePoints = detection.landmarks.getJawOutline();
       const nosePoints = detection.landmarks.getNose();
       const startX = (jawOutLinePoints[2].x + nosePoints[4].x) / 2;
@@ -88,9 +103,14 @@ export default function Page() {
   );
 
   // 肌の暗い色
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const getSkinDarkColorCode = useCallback(
-    (detection: any, ctx: CanvasRenderingContext2D) => {
+    (
+      detection: faceapi.WithFaceLandmarks<
+        { detection: faceapi.FaceDetection },
+        faceapi.FaceLandmarks68
+      >,
+      ctx: CanvasRenderingContext2D,
+    ) => {
       const nosePoints = detection.landmarks.getNose();
       const OFFSET_X = 23;
       const startX = Math.max(0, Math.round(nosePoints[5].x - OFFSET_X - BOX_SIZE / 2));
@@ -104,12 +124,17 @@ export default function Page() {
   );
 
   // 瞳の色
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const getEyeColorCode = useCallback(
-    (detection: any, ctx: CanvasRenderingContext2D) => {
+    (
+      detection: faceapi.WithFaceLandmarks<
+        { detection: faceapi.FaceDetection },
+        faceapi.FaceLandmarks68
+      >,
+      ctx: CanvasRenderingContext2D,
+    ) => {
       const nosePoints = detection.landmarks.getLeftEye();
-      const midX = (nosePoints[1]._x + nosePoints[4]._x) / 2;
-      const midY = (nosePoints[1]._y + nosePoints[4]._y) / 2;
+      const midX = (nosePoints[1].x + nosePoints[4].x) / 2;
+      const midY = (nosePoints[1].y + nosePoints[4].y) / 2;
       const startX = Math.max(0, Math.round(midX - BOX_SIZE / 2));
       const startY = Math.max(0, Math.round(midY - BOX_SIZE / 2));
 
@@ -122,7 +147,13 @@ export default function Page() {
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const getFaceColorCodeData = useCallback(
-    (detections: any[], ctx: CanvasRenderingContext2D) => {
+    (
+      detections: faceapi.WithFaceLandmarks<
+        { detection: faceapi.FaceDetection },
+        faceapi.FaceLandmarks68
+      >[],
+      ctx: CanvasRenderingContext2D,
+    ) => {
       const result = detections.map((detection) => ({
         hairBrightColorCode: getHairBrightColorCode(detection, ctx),
         hairDarkColorCode: getHairDarkColorCode(detection, ctx),
