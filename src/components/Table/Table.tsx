@@ -15,10 +15,10 @@ type TableProps = {
 
 const FEATURE_LABEL = ['肌', '髪', '目'] as const;
 const FASHION_LABEL = [
-  'ベーシックカラー',
+  'ベーシック',
   'ピンク系',
-  '青系',
-  'モノトーンカラー',
+  'ブルー系',
+  'モノトーン',
   'グリーン系',
   'レッド系',
   'イエロー系',
@@ -39,10 +39,10 @@ const Table = ({ resultText, result, kind }: TableProps) => {
               }
               key={data.id}
             >
-              <td className="h-32 w-1/4 border-r border-[#DDDDDD] text-center text-base">
+              <td className="h-24 w-1/4 border-r border-[#DDDDDD] text-center text-base md:h-32">
                 {label[i]}
               </td>
-              <td className="h-32 w-3/4 whitespace-pre-line text-xs">
+              <td className="h-24 w-3/4 whitespace-pre-line text-xs md:h-32">
                 <div className="mx-auto w-[50vw] max-sm:w-[95%]">{data.text}</div>
               </td>
             </tr>

@@ -5,6 +5,7 @@ import TextButton from '@/components/TextButton/TextButton';
 import Title from '@/components/Title/Title';
 import TitleLabel from '@/components/TitleLabel/TitleLabel';
 import Toast from '@/components/Toast/Toast';
+import { COLOR_CODES } from '@/constants/colorCodes';
 import { resultImagePaths } from '@/constants/resultImagePaths';
 import { resultText } from '@/constants/resultText';
 import { snsImagePaths } from '@/constants/snsImagePaths';
@@ -103,163 +104,181 @@ const ResultTemplate = ({ result }: Props) => {
       await navigator.share({ url: pageUrl });
     } catch (_) {}
   };
-
   return (
-    <div className="w-screen pb-32">
+    <div className="w-screen">
       <section
-        className={clsx('pb-36 pt-12 text-xl font-bold', `bg-[${BG_COLOR[result]}]`)}
+        className={clsx(
+          'px-[10%] py-12 text-xl font-bold md:px-24',
+          `bg-[${BG_COLOR[result]}]`,
+        )}
       >
-        <div className="relative z-0 px-48 text-left">
+        <div className="relative z-0 flex flex-col items-center md:items-start">
           <TitleLabel background={result}>{`${RESULT_TEXT[result].label}`}</TitleLabel>
-          <div className="mt-12 flex flex-col gap-y-6 text-center">
-            <div>
-              {/* storybookだとフォントおかしいけど、ページでみたらちゃん出てる？ */}
-              {/* todo: title文字サイズとタグを分離して設定できるようにする */}
-              {/* todo: というか、h1は「イエベ春」とかの方がよい？ここら辺踏まえて、コンポーネントについても調整したい */}
-              <Title as="h1" isFontKnewave={true} isFontBold={true}>
-                {RESULT_TEXT[result].title}
-              </Title>
-              <div className="mt-8">{RESULT_TEXT[result].prefix}</div>
-            </div>
-            <div>{RESULT_TEXT[result].base}</div>
+        </div>
+        <div className="mt-12 flex flex-col items-center gap-y-6 text-center">
+          <div>
+            {/* storybookだとフォントおかしいけど、ページでみたらちゃん出てる？ */}
+            {/* todo: title文字サイズとタグを分離して設定できるようにする */}
+            {/* todo: というか、h1は「イエベ春」とかの方がよい？ここら辺踏まえて、コンポーネントについても調整したい */}
+            <Title as="h1" isFontKnewave={true} isFontBold={true}>
+              {RESULT_TEXT[result].title}
+            </Title>
+            <div className="mt-8">{RESULT_TEXT[result].prefix}</div>
           </div>
+          <div>{RESULT_TEXT[result].base}</div>
+          <Image
+            className="mt-4 h-auto w-full md:w-[500px]"
+            width={745}
+            height={390}
+            src={imagePaths.color.src}
+            alt={imagePaths.color.alt}
+          />
         </div>
-        <Image
-          className="mx-auto mt-16 px-44"
-          width={745}
-          height={390}
-          src={imagePaths.color.src}
-          alt={imagePaths.color.alt}
-        />
-        <div className="mt-20 text-white">
-          <span className="mx-auto block w-fit rounded-md bg-black p-2">
-            一言で言うと
-          </span>
-        </div>
-        <div className="mt-14 text-4xl">
-          <span className="mx-auto block w-fit rounded-md border-2 border-black bg-[#FFCEDF] p-5">
+        <div className="mt-10 flex flex-col items-center">
+          <span className="rounded-md bg-black p-2 text-white">一言で言うと</span>
+          <span
+            className={clsx(
+              'mt-10 w-full max-w-sm rounded-md border-2 border-black py-3 text-center text-[20px]',
+              result === 'spring' || result === 'summer' ? 'text-black' : 'text-white',
+            )}
+            style={{ backgroundColor: COLOR_CODES[result] }}
+          >
             {RESULT_TEXT[result].catchphrase}
           </span>
+          <p className="mt-10 whitespace-pre-line text-center text-base">
+            {resultTexts.color}
+          </p>
         </div>
-        <p className="mt-24 whitespace-pre-line text-center">{resultTexts.color}</p>
       </section>
-      <section className="mt-32">
-        <div className="px-48 text-left">
+
+      <section className="pt-12">
+        <div className="relative z-0 flex flex-col items-center px-[10%] md:items-start md:px-24">
           <TitleLabel
             background={result}
           >{`${RESULT_TEXT[result].prefix}の特徴`}</TitleLabel>
         </div>
-        <Image
-          className="mx-auto mt-16 px-44"
-          src="/result/feature.png"
-          alt="あなたの特徴"
-          width={1450}
-          height={1030}
-        />
-        <div className="mt-16 whitespace-pre-line text-center">
-          {resultText[result].characteristics}
+        <div className="flex flex-col items-center px-[10%] md:px-24">
+          <Image
+            className="pt-12 md:w-[500px]"
+            src="/result/feature.png"
+            alt="あなたの特徴"
+            width={1450}
+            height={1030}
+          />
+          <p className="whitespace-pre-line py-12 text-center">
+            {resultText[result].characteristics}
+          </p>
         </div>
-        <div className="mx-44 mt-16">
-          <Table resultText={resultTexts.feature} result={result} kind="feature" />
-        </div>
+        <Table resultText={resultTexts.feature} result={result} kind="feature" />
       </section>
-      {/* ③ */}
-      {/* ④ */}
 
-      <section className="mt-32">
-        <div className="px-48 text-left">
+      <section className="pt-12">
+        <div className="relative z-0 flex flex-col items-center px-[10%] md:items-start md:px-24">
           <TitleLabel background={result}>あなたのファッション</TitleLabel>
         </div>
-        <Image
-          className="mx-auto mt-16 px-44"
-          src={imagePaths.fashion.src}
-          alt={imagePaths.fashion.alt}
-          width={722}
-          height={794}
-        />
-        <p className="mx-auto mt-16 w-1/2 whitespace-pre-line text-center">
-          {resultTexts.fashion}
-        </p>
-        <div className="mx-44 mt-16">
-          <Table
-            resultText={resultTexts.fashionColor}
-            result={result}
-            kind="fashionColor"
+        <div className="flex flex-col items-center px-[10%] md:px-24">
+          <Image
+            className="md:h-94 w-auto pt-12"
+            src={imagePaths.fashion.src}
+            alt={imagePaths.fashion.alt}
+            width={722}
+            height={794}
           />
+          <p className="whitespace-pre-line py-12 text-center">{resultTexts.fashion}</p>
         </div>
+        <Table
+          resultText={resultTexts.fashionColor}
+          result={result}
+          kind="fashionColor"
+        />
       </section>
 
-      <section className="mt-32">
-        <div className="px-48 text-left">
+      <section className="pt-12">
+        <div className="relative z-0 flex flex-col items-center px-[10%] md:items-start md:px-24">
           <TitleLabel
             background={result}
-          >{`${RESULT_TEXT[result].prefix}さんに似合わない色`}</TitleLabel>
+          >{`${RESULT_TEXT[result].prefix}に似合わない色`}</TitleLabel>
         </div>
-        <Image
-          className="mx-auto mt-16 px-44"
-          src={imagePaths.badFashion.src}
-          alt={imagePaths.badFashion.alt}
-          width={794}
-          height={750}
-        />
-        <p className="mx-auto mt-16 w-1/2 whitespace-pre-line text-left font-sans">
-          {resultTexts.badFashion}
-        </p>
+        <div className="flex flex-col items-center px-[10%] md:px-24">
+          <Image
+            className="md:h-94 w-auto pt-12"
+            src={imagePaths.badFashion.src}
+            alt={imagePaths.badFashion.alt}
+            width={794}
+            height={750}
+          />
+          <p className="whitespace-pre-line pt-12 text-center">
+            {resultTexts.badFashion}
+          </p>
+        </div>
       </section>
 
-      <section className="mt-32">
-        <div className="px-48 text-left">
+      <section className="pt-12">
+        <div className="relative z-0 flex flex-col items-center px-[10%] md:items-start md:px-24">
           <TitleLabel
             background={result}
-          >{`${RESULT_TEXT[result].prefix}さんのヘアカラー`}</TitleLabel>
+          >{`${RESULT_TEXT[result].prefix}のヘアカラー`}</TitleLabel>
         </div>
-        <Image
-          className="mx-auto mt-16 px-44"
-          src={imagePaths.hair.src}
-          alt={imagePaths.hair.alt}
-          width={794}
-          height={750}
-        />
-        <p className="mx-auto mt-16 w-1/2 whitespace-pre-line text-left font-sans">
-          {resultTexts.hair}
-        </p>
+        <div className="flex flex-col items-center px-[10%] md:px-24">
+          <Image
+            className="md:h-94 w-auto pt-12"
+            src={imagePaths.hair.src}
+            alt={imagePaths.hair.alt}
+            width={794}
+            height={750}
+          />
+          <p className="whitespace-pre-line pt-12 text-center">{resultTexts.hair}</p>
+        </div>
       </section>
 
-      <section className="mt-32">
-        <div className="px-48 text-left">
+      <section className="py-12">
+        <div className="relative z-0 flex flex-col items-center px-[10%] md:items-start md:px-24">
           <TitleLabel background={result}>SNSでシェア</TitleLabel>
         </div>
-        <Image
-          className="mx-auto mt-16 px-44"
-          src={imagePaths.share.src}
-          alt={imagePaths.share.alt}
-          width={1450}
-          height={1030}
-        />
-        <div className="mx-auto mt-16 flex w-3/5 justify-around">
-          {SNS_ITEM_LIST.map(({ key, src, alt, shareLink }) =>
-            key === 'share' ? (
-              <div key={key}>
-                <button type="button" onClick={shareUrl}>
+        <div className="flex flex-col items-center px-[10%] md:px-24">
+          <Image
+            className="pt-12 md:w-[500px]"
+            src={imagePaths.share.src}
+            alt={imagePaths.share.alt}
+            width={1450}
+            height={1030}
+          />
+          <div className="flex w-full justify-around pt-12 md:w-[500px]">
+            {SNS_ITEM_LIST.map(({ key, src, alt, shareLink }) =>
+              key === 'share' ? (
+                <div key={key} className="size-[60px]">
+                  <button type="button" onClick={shareUrl}>
+                    <Image src={src} alt={alt} width={100} height={100} />
+                  </button>
+                </div>
+              ) : (
+                <Link
+                  key={key}
+                  href={shareLink}
+                  target="_blank"
+                  className="block size-[60px]"
+                >
                   <Image src={src} alt={alt} width={100} height={100} />
-                </button>
-              </div>
-            ) : (
-              <Link key={key} href={shareLink} target="_blank" className="block">
-                <Image src={src} alt={alt} width={100} height={100} />
-              </Link>
-            ),
-          )}
-        </div>
-        <p className="mt-16 px-56 text-center font-sans">
-          このボタンからリンクをコピーしてSNSに投稿すると、このように診断結果画像が表示されます。
-          <br />
-          SNSで友達やフォロワーに診断結果をシェアしてみよう！
-        </p>
-        <div className="mt-16 text-center">
-          <TextButton onClick={copyToClipboard}>診断結果リンクをコピーする</TextButton>
+                </Link>
+              ),
+            )}
+          </div>
+          <div className="mt-12 text-center">
+            <TextButton onClick={copyToClipboard}>診断結果リンクをコピーする</TextButton>
+          </div>
+          <p className="whitespace-pre-line pt-12 text-center">
+            コピーしたリンクをSNSに投稿すると、
+            <br />
+            診断結果の画像付きで投稿になります。
+            <br />
+            <br />
+            友達やフォロワーに
+            <br />
+            診断結果をシェアしてみましょう！
+          </p>
         </div>
       </section>
+
       <div className="mx-[500px] mt-9 text-center">
         <Toast isShow={isShow}>コピーしました！</Toast>
       </div>

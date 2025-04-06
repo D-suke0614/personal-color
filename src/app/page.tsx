@@ -4,19 +4,19 @@ import Image from 'next/image';
 
 export default function Home() {
   return (
-    <div className="relative mx-auto flex h-screen flex-col items-center justify-between pb-16 pt-8">
+    <div className="flex h-screen flex-col items-center justify-between py-32 md:py-16">
       <div>
         <Title isFontBold={true} isFontKnewave={true}>
           Tone Match Me
         </Title>
-        <p className="mt-8 text-center">
+        <p className="mt-16 text-center md:mt-8">
           あなたに合う色は何色ですか？
           <br />
           合う色を見つけるパーソナルカラー診断
         </p>
       </div>
       <Image
-        className="transform-[transitionX[-50%]] absolute top-24 -z-10"
+        className="w-auto md:h-80"
         src="/tone-match-me.png"
         alt="tone match me"
         width={1000}
