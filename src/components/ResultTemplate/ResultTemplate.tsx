@@ -105,7 +105,7 @@ const ResultTemplate = ({ result }: Props) => {
     } catch (_) {}
   };
   return (
-    <div className="w-screen">
+    <div className="relative w-screen">
       <section
         className={clsx(
           'px-[10%] py-12 text-xl font-bold md:px-24',
@@ -157,7 +157,7 @@ const ResultTemplate = ({ result }: Props) => {
             background={result}
           >{`${RESULT_TEXT[result].prefix}の特徴`}</TitleLabel>
         </div>
-        <div className="flex flex-col items-center px-[10%] md:px-24">
+        <div className="flex justify-center">
           <Image
             className="pt-12 md:w-[500px]"
             src="/result/feature.png"
@@ -165,6 +165,8 @@ const ResultTemplate = ({ result }: Props) => {
             width={1450}
             height={1030}
           />
+        </div>
+        <div className="flex flex-col items-center px-[10%] md:px-24">
           <p className="whitespace-pre-line py-12 text-center">
             {resultText[result].characteristics}
           </p>
@@ -235,7 +237,7 @@ const ResultTemplate = ({ result }: Props) => {
         <div className="relative z-0 flex flex-col items-center px-[10%] md:items-start md:px-24">
           <TitleLabel background={result}>SNSでシェア</TitleLabel>
         </div>
-        <div className="flex flex-col items-center px-[10%] md:px-24">
+        <div className="flex justify-center">
           <Image
             className="pt-12 md:w-[500px]"
             src={imagePaths.share.src}
@@ -243,6 +245,8 @@ const ResultTemplate = ({ result }: Props) => {
             width={1450}
             height={1030}
           />
+        </div>
+        <div className="flex flex-col items-center px-[10%] md:px-24">
           <div className="flex w-full justify-around pt-12 md:w-[500px]">
             {SNS_ITEM_LIST.map(({ key, src, alt, shareLink }) =>
               key === 'share' ? (
@@ -270,16 +274,15 @@ const ResultTemplate = ({ result }: Props) => {
             コピーしたリンクをSNSに投稿すると、
             <br />
             診断結果の画像付きで投稿になります。
-            <br />
-            <br />
+          </p>
+          <p className="whitespace-pre-line pt-4 text-center">
             友達やフォロワーに
             <br />
             診断結果をシェアしてみましょう！
           </p>
         </div>
       </section>
-
-      <div className="mx-[500px] mt-9 text-center">
+      <div className="absolute bottom-32 flex w-screen justify-center">
         <Toast isShow={isShow}>コピーしました！</Toast>
       </div>
     </div>

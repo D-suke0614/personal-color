@@ -11,7 +11,7 @@ const Toast = ({ children, isShow }: Props) => {
   return (
     <div
       className={clsx(
-        'rounded-xl bg-black px-28 py-3 text-2xl text-white opacity-80',
+        'w-[80vw] rounded-xl bg-black py-3 text-center text-[20px] text-white opacity-80 md:w-[50vw]',
         `${isShow ? 'block' : 'hidden'}`,
       )}
     >

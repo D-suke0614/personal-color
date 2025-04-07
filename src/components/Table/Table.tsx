@@ -42,7 +42,7 @@ const Table = ({ resultText, result, kind }: TableProps) => {
               <td className="h-24 w-1/4 border-r border-[#DDDDDD] text-center text-base md:h-32">
                 {label[i]}
               </td>
-              <td className="h-24 w-3/4 whitespace-pre-line text-xs md:h-32">
+              <td className="h-24 w-3/4 whitespace-pre-line text-xs/5 md:h-32 md:text-base/6">
                 <div className="mx-auto w-[50vw] max-sm:w-[95%]">{data.text}</div>
               </td>
             </tr>
