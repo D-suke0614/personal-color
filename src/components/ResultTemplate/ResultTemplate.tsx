@@ -270,16 +270,18 @@ const ResultTemplate = ({ result }: Props) => {
           <div className="mt-12 text-center">
             <TextButton onClick={copyToClipboard}>診断結果リンクをコピーする</TextButton>
           </div>
-          <p className="whitespace-pre-line pt-12 text-center">
-            コピーしたリンクをSNSに投稿すると、
-            <br />
-            診断結果の画像付きで投稿になります。
-          </p>
-          <p className="whitespace-pre-line pt-4 text-center">
-            友達やフォロワーに
-            <br />
-            診断結果をシェアしてみましょう！
-          </p>
+          <div className="mt-12 flex flex-col gap-4 whitespace-pre-line text-center">
+            <p>
+              コピーしたリンクをSNSに投稿すると、
+              <br />
+              診断結果の画像付きで投稿になります。
+            </p>
+            <p className="gap-4">
+              友達やフォロワーに
+              <br />
+              診断結果をシェアしてみましょう！
+            </p>
+          </div>
         </div>
       </section>
       <div className="absolute bottom-32 flex w-screen justify-center">
