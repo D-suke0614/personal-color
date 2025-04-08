@@ -102,7 +102,7 @@ const ResultTemplate = ({ result }: Props) => {
   const shareUrl = async () => {
     try {
       await navigator.share({ url: pageUrl });
-    } catch (_) {}
+    } catch {}
   };
   return (
     <div className="relative w-screen">
