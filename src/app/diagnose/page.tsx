@@ -145,7 +145,6 @@ export default function Page() {
     [calculateAverageColor],
   );
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const getFaceColorCodeData = useCallback(
     (
       detections: faceapi.WithFaceLandmarks<
