@@ -22,7 +22,7 @@ export default function Page() {
     {
       title: 'Hello',
       content: (
-        <p className="text-center">
+        <p className="text-center text-lg/10">
           Tone Match Meでは、
           <br />
           あなたの色が何色に合うのか？を
@@ -34,10 +34,13 @@ export default function Page() {
     {
       title: '自分の色がわかると',
       content: (
-        <p className="text-center">
-          服やメイク選び服やメイク選びの時に自分にに合わない色の
+        <p className="text-center text-lg/10">
+          服やメイク選び服やメイク選びの時に
           <br />
-          アイテムを購入して後悔することがなくなる。
+          自分に似合わない色のアイテムを購入して
+          <br />
+          後悔することがなくなる。
+          <br />
           <br />
           モテたい！垢抜けたい！
           <br />
@@ -46,11 +49,11 @@ export default function Page() {
       ),
     },
     {
-      title: 'PCやスマホを使ってカメラで顔を写すだけ！',
+      title: 'PC/スマホで、カメラに顔を写すだけ！',
       content: (
         <>
           <Image
-            className="mx-auto mt-6"
+            className="w-4/5 md:w-[500px]"
             src="/tutorial/face-scan.png"
             alt="PCやスマホを使ってカメラで顔を写すだけ！"
             width={500}
@@ -64,12 +67,12 @@ export default function Page() {
       content: (
         <div>
           <p className="text-center">
-            あなたにあった色やコーデポイント
+            あなたに合った色やコーデポイント
             <br />
             今更聞けない活かし方を知れる
           </p>
           <Image
-            className="mx-auto mt-6"
+            className="mt-16 md:mt-6 md:w-[500px]"
             src="/tutorial/color-palette.png"
             alt="あなたに合う色がわかる！"
             width={576}
@@ -83,10 +86,10 @@ export default function Page() {
       content: (
         <>
           <p className="text-center">自分の診断結果をSNSでも共有できる！</p>
-          <div className="mx-auto mt-16 flex w-3/5 justify-around">
+          <div className="flex w-2/3 flex-wrap justify-center gap-8">
             {SNS_ITEM_LIST.map(({ key, src, alt }) => (
-              <div key={key}>
-                <Image src={src} alt={alt} width={100} height={100} />
+              <div key={key} className="">
+                <Image className="" src={src} alt={alt} width={100} height={100} />
               </div>
             ))}
           </div>
@@ -96,7 +99,7 @@ export default function Page() {
   ];
 
   return (
-    <div>
+    <div className="h-screen">
       <Tutorial contents={CAROUSEL_CONTENTS} />
     </div>
   );

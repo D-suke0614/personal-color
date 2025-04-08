@@ -39,14 +39,11 @@ const Tutorial = ({ contents }: Props) => {
   };
 
   return (
-    <div className="flex flex-col p-32 ">
-      <div className="flex h-[500px] flex-col gap-16">
-        <Title as="h2" isFontBold={true}>
-          {contents[currentPage - 1].title}
-        </Title>
-
-        {contents[currentPage - 1].content}
-      </div>
+    <div className="flex h-screen flex-col items-center justify-between py-32">
+      <Title as="h2" isFontBold={true}>
+        {contents[currentPage - 1].title}
+      </Title>
+      {contents[currentPage - 1].content}
       <Pagination
         currentPage={currentPage}
         onPageChange={onPageChange}
