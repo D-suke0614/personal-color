@@ -1,13 +1,23 @@
 'use client';
 
 import * as faceapi from 'face-api.js';
+import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useRef } from 'react';
 
 export default function Page() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
+  const router = useRouter();
   const BOX_SIZE = 5;
+
+  type AnalyzedColorCodes = {
+    hairBrightColorCode: string;
+    hairDarkColorCode: string;
+    skinBrightColorCode: string;
+    skinDarkColorCode: string;
+    eyeColorCode: string;
+  };
 
   const rgbToHex = useCallback((r: number, g: number, b: number) => {
     const toHex = (value: number) => value.toString(16).padStart(2, '0');
@@ -153,7 +163,7 @@ export default function Page() {
       >[],
       ctx: CanvasRenderingContext2D,
     ) => {
-      const result = detections.map((detection) => ({
+      const result: AnalyzedColorCodes[] = detections.map((detection) => ({
         hairBrightColorCode: getHairBrightColorCode(detection, ctx),
         hairDarkColorCode: getHairDarkColorCode(detection, ctx),
         skinBrightColorCode: getSkinBrightColorCode(detection, ctx),
@@ -161,7 +171,7 @@ export default function Page() {
         eyeColorCode: getEyeColorCode(detection, ctx),
       }));
 
-      console.log(result[0]);
+      return result[0];
     },
     [
       getEyeColorCode,
@@ -186,8 +196,72 @@ export default function Page() {
     ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
 
     const detections = await analyzeFace(video);
-    getFaceColorCodeData(detections, ctx);
+    return getFaceColorCodeData(detections, ctx);
   }, [getFaceColorCodeData]);
+
+  const hexToHSL = (hex: string): { h: number; s: number; l: number } => {
+    const r = parseInt(hex.slice(1, 3), 16) / 255;
+    const g = parseInt(hex.slice(3, 5), 16) / 255;
+    const b = parseInt(hex.slice(5, 7), 16) / 255;
+
+    const max = Math.max(r, g, b),
+      min = Math.min(r, g, b);
+    let h = 0,
+      s = 0;
+    const l = (max + min) / 2;
+
+    if (max !== min) {
+      const d = max - min;
+      s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+      switch (max) {
+        case r:
+          h = (g - b) / d + (g < b ? 6 : 0);
+          break;
+        case g:
+          h = (b - r) / d + 2;
+          break;
+        case b:
+          h = (r - g) / d + 4;
+          break;
+      }
+      h *= 60;
+    }
+
+    return { h: Math.round(h), s: Math.round(s * 100), l: Math.round(l * 100) };
+  };
+
+  const analyzePersonalColor = (colors: AnalyzedColorCodes) => {
+    const skinBrightHSL = hexToHSL(colors.skinBrightColorCode);
+    const skinDarkHSL = hexToHSL(colors.skinDarkColorCode);
+    const eyeHSL = hexToHSL(colors.eyeColorCode);
+    const hairBrightHSL = hexToHSL(colors.hairBrightColorCode);
+    const hairDarkHSL = hexToHSL(colors.hairDarkColorCode);
+
+    // 肌の平均値で分類
+    const avgSkinHue = (skinBrightHSL.h + skinDarkHSL.h) / 2;
+    const avgSkinSat = (skinBrightHSL.s + skinDarkHSL.s) / 2;
+    const avgSkinLight = (skinBrightHSL.l + skinDarkHSL.l) / 2;
+
+    const avgHairLight = (hairBrightHSL.l + hairDarkHSL.l) / 2;
+    const avgEyeLight = eyeHSL.l;
+
+    const avgLight = (avgSkinLight + avgHairLight + avgEyeLight) / 3;
+
+    const isYellowTone = avgSkinHue >= 10 && avgSkinHue <= 45;
+    const isBlueTone = avgSkinHue >= 270 || avgSkinHue <= 60;
+
+    // シンプルなルールベース分類
+    if (isYellowTone) {
+      if (avgLight > 60 && avgSkinSat >= 40) router.push('/spring');
+      if (avgLight <= 60) router.push('/autumn');
+    } else if (isBlueTone) {
+      if (avgLight > 60 && avgSkinSat < 50) router.push('/summer');
+      router.push('winter');
+    }
+
+    // デフォルト fallback
+    router.push('winter');
+  };
 
   const analyzeFace = async (video: HTMLVideoElement) => {
     return await faceapi
@@ -244,13 +318,12 @@ export default function Page() {
 
       // カメラに一人の顔が映った時にカラーコードを取得するようにする
       if (detections.length === 1) {
-        console.log('1 顔認証開始');
-        handleCaptureAndAnalyze();
+        const analyzedColorCodes = await handleCaptureAndAnalyze();
+        if (analyzedColorCodes) analyzePersonalColor(analyzedColorCodes);
 
         if (intervalRef.current) {
           clearInterval(intervalRef.current);
           intervalRef.current = null;
-          console.log('2 顔認識成功 → setInterval停止');
         }
       } else {
         alert('カメラに顔を映してください（複数人NG）');
